@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <title>lab1</title>
+</head>
+<body>
+
+<button id="clickButton">点击我</button>
+<div id="result"></div>
+
+<script>
+    let lastClickTime = null;
+
+    document.getElementById('clickButton').addEventListener('click', function() {
+        const currentTime = new Date().getTime();
+
+        if (lastClickTime !== null) {
+            const timeInterval = currentTime - lastClickTime;
+            displayResult(`时间间隔：${timeInterval} 毫秒`);
+        } else {
+            displayResult("第一次点击");
+        }
+
+        lastClickTime = currentTime;
+    });
+
+    function displayResult(message) {
+        document.getElementById('result').innerText = message;
+    }
+</script>
+
+</body>
+</html>
