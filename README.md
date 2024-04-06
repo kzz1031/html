@@ -2,7 +2,7 @@
 
 ### 浏览器网页是客户端，客户端通过服务器访问数据库。这是SOA架构，我们细分用到Serverless架构，并在具体提供服务Controller和用户端加上BFF。BFF就是在前端和后端中间用JavaScript写个能让前端在后端跑的东西，用Express.js框架（一个流行的Node.js web应用框架）
 
-### 用户端⇔Restful API服务⇔Controller（UI服务）⇔Business Services（业务服务）⇔Data Services（数据管理模块）⇔数据接口⇔数据库
+### 用户端⇔API网关⇔Restful API服务⇔Controller（UI服务）⇔Business Services（业务服务）⇔Data Services（数据管理模块）⇔数据接口⇔数据库
 
 API网关：①请求路由：API网关接收来自客户端的请求，并根据配置将这些请求路由到适当的后端服务（如AWS Lambda函数）。这涵盖了RESTful API和可能的其他API模式。
         ②数据转换：它可以处理请求和响应的数据转换。      ————执行转换任务
