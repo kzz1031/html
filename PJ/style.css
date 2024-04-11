@@ -10,30 +10,37 @@ body {
 }
 
 .container {
-    width: 80%; /* 调整宽度 */
-    max-width: 500px;
+    width: 100%; /* 调整宽度 */
+    max-width: 800px; /* 调整最大宽度 */
+    display: flex;
+    align-items: flex-start; /* 垂直居上 */
     padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.font_size_button{
+    margin: 0;
+    width: 10 px;
+    
+}
+
 textarea {
-    width: calc(100% - 22px); /* 调整宽度 */
+    width: 100%; /* 充满父元素的宽度 */
     height: 150px;
-    margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     resize: none;
-    margin-right: 10px; /* 新增：增加右边距 */
 }
 
-button {
+.translate_button {
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 10px 20px;
+    margin: 10px;
     cursor: pointer;
     border-radius: 5px;
 }
