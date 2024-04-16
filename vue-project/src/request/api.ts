@@ -15,6 +15,10 @@ interface ReqRegister {
     email: string
 }
 
+interface ReqChatgpt {
+
+}
+
 interface ReqStatus {
     id: string
     navStatus: string

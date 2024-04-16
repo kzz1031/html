@@ -8,13 +8,13 @@ import IndexMain from "@/components/IndexMain.vue";
 //import AddUser from "@/components/AddUser.vue";
 import Register from "@/pages/Register.vue";
 import Chat from "@/pages/chatgpt.vue";
-
+import Main from "@/pages/Main.vue";
 const routes =
     [
         {
             path: '/',
-            name: 'Chat',
-            component: Chat
+            name: 'Main',
+            component: Main
         },
         {
             path: '/Login',
@@ -48,7 +48,7 @@ const routes =
 
         },
         {
-            path: '/test',
+            path: '/Test',
             name: 'Test',
             component: Test
         }
