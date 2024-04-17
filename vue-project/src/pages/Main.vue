@@ -5,7 +5,7 @@
         <el-menu :default-openeds="['1', '3']">
           <el-sub-menu index="1">
             <template #title>
-              <el-icon><message /></el-icon>Navigator Oneeeee
+              <el-icon><message /></el-icon>Navigator One
             </template>
             <el-menu-item-group>
               <template #title>Group 1</template>
@@ -79,11 +79,30 @@
       <el-main>
         <div id="app">
           <div class="container">
-            <textarea class="input_Text" v-model="inputText" :style="{ fontSize: fontSize + 'px' }" placeholder="输入要翻译的文本"></textarea>
-            <el-button class="translate_button" @click="translateText">翻译</el-button>
-            <textarea class="translated_Text" v-model="translatedText" :style="{ fontSize: fontSize + 'px' }" placeholder="翻译结果"></textarea>
-            <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
-            <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
+            <div class="container_header">
+             <el-dropdown class="translated-language">
+               <el-button type="primary">
+                 Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon>
+               </el-button>
+               <template #dropdown>
+                 <el-dropdown-menu >
+                   <el-dropdown-item>Action 1</el-dropdown-item>
+                   <el-dropdown-item>Action 2</el-dropdown-item>
+                 </el-dropdown-menu>
+               </template>
+             </el-dropdown>
+              <Selector></Selector>
+            </div>
+            <div class="container_body">
+              <textarea class="input_Text" v-model="inputText" :style="{ fontSize: fontSize + 'px' }" placeholder="输入要翻译的文本"></textarea>
+              <el-button class="translate_button" @click="translateText">翻译</el-button>
+              <textarea class="translated_Text" v-model="translatedText" :style="{ fontSize: fontSize + 'px' }" placeholder="翻译结果"></textarea>
+
+            </div>
+            <div class="container_foot">
+              <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
+              <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
+            </div>
           </div>
         </div>
       </el-main>
@@ -95,6 +114,7 @@
 import { ref } from 'vue'
 import {Menu as IconMenu, Message, Minus, Plus, Setting} from '@element-plus/icons-vue'
 import {useRouter} from 'vue-router'
+import Selector from '@/components/Selector.vue'
 
 const inputText = ref('');
 const translatedText = ref('');
@@ -103,6 +123,7 @@ const router = useRouter();
 async function translateText() {
   const apiKey = 'sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9';// 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
+
   console.log("translateText() 函数被调用了！");
   try {
     const response = await fetch(apiUrl, {
@@ -116,7 +137,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: '请将下面这段话直接翻译成英文(直接把英文给我):' + inputText.value
+            content: '请将下面这段话直接翻译成英文(直接把英文给我):' +inputText.value
           }
         ]
       })
@@ -133,16 +154,16 @@ async function translateText() {
   }
 }
 
+function  jumptoLogin(){
+  router.push('/login');
+}
+
 function increaseFontSize() {
   fontSize.value += 2;
 }
 
 function decreaseFontSize() {
   fontSize.value -= 2;
-}
-
-function  jumptoLogin(){
-  router.push('/login');
 }
 
 const fontSize = ref(16); // 初始字体大小
@@ -186,26 +207,39 @@ body {
 .container {
   width: 90%; /* 调整宽度 */
   max-width: 1200px; /* 调整最大宽度 */
+  height: 300px;
   margin-top: 20px;
   padding: 20px;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
   align-items: flex-start; /* 垂直居上 */
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+.container_header {
+  height: auto;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.container_foot {
+  height: auto;
+  margin-top: 5px;
+}
+.container_body{
+  margin-top: 0px;
+  display: flex;
+  height: 80%;
+}
 .font_size_button{
   margin: 0;
-  width: 10 px;
+  width: 10px;
 
 }
 
 textarea {
   width: 100%; /* 充满父元素的宽度 */
-  height: 150px;
+  height: 100% - 20px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
