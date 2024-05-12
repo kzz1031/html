@@ -4,6 +4,9 @@ import {reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 import {useRouter} from 'vue-router'
 import {useUserstore} from '@/store/user'
+import {LoginApi} from "@/request/api";
+import {ElMessage} from 'element-plus'
+import { GetUserInfoByUserName } from '@/request/api';
 
 const userStore=useUserstore()
 const router = useRouter()
@@ -36,8 +39,6 @@ const rules = reactive<FormRules<typeof ruleForm>>({
   userName: [{validator: checkUserName, trigger: 'blur'}],
   password: [{validator: checkPassword, trigger: 'blur'}],
 })
-import {LoginApi} from "@/request/api";
-import {ElMessage} from 'element-plus'
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
@@ -47,12 +48,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
         username: ruleForm.userName,
         password: ruleForm.password
       })
-      // console.log(res)
       if (res.success) {
         ElMessage.success('登陆成功')
         userStore.userName=ruleForm.userName
-        await router.push({ name: 'IndexMain', params: { userName: ruleForm.userName } });
-
+        
+        let res2 = await GetUserInfoByUserName({
+          userName: userStore.userName
+        })
+        //userStore.search_sum =  
+        userStore.is_superuser = res2.user.is_superuser;
+        console.log(userStore.is_superuser)
+        //await router.push({ name: 'IndexMain', params: { userName: ruleForm.userName } });
+        router.push('/');
       } else {
         ElMessage.error('登陆失败，请重新输入用户名和密码')
       }
@@ -66,8 +73,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
 function jumpToRegister() {
   router.push('/register')
 }
-
-
 
 </script>
 

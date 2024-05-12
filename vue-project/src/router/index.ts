@@ -9,6 +9,9 @@ import IndexMain from "@/components/IndexMain.vue";
 import Register from "@/pages/Register.vue";
 import Chat from "@/pages/chatgpt.vue";
 import Main from "@/pages/Main.vue";
+import History from "@/pages/History.vue";
+import UserInfo from "@/pages/UserInfo.vue";
+import Collection from "@/pages/collection.vue";
 const routes =
     [
         {
@@ -25,6 +28,21 @@ const routes =
             path: '/register',
             name: 'Register',
             component: Register
+        },
+        {
+            path: '/history',
+            name: 'History',
+            component: History,
+        },
+        {
+            path: '/collect',
+            name: 'Collect',
+            component: Collection,
+        },
+        {
+            path: '/userinfo',
+            name: 'UserInfo',
+            component: UserInfo,
         },
         {
             path: '/index',

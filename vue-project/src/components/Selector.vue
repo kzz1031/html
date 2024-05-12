@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="value" placeholder="Select" style="width: 240px">
+  <el-select v-model="lvalue" placeholder="请选择语言" style="width: 300px" @change="handleClick" id="language_selector">
     <el-option
         v-for="item in options"
         :key="item.value"
@@ -12,30 +12,24 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-
-const value = ref('')
+import { defineEmits } from 'vue'
+const lvalue = ref('中文翻译成英文')
+const emit = defineEmits(['handleValueChange'])
+const handleClick = () => {
+  emit('handleValueChange', lvalue.value);
+}
 const options = [
   {
     value: '英文翻译成中文',
-    label: 'EN -> CH',
+    label: '英文 -> 中文',
   },
   {
     value: '中文翻译成英文',
-    label: 'CH -> EN',
+    label: '中文 -> 英文',
     disabled: false,
-  },
-  {
-    value: 'Option3',
-    label: 'Option3',
-  },
-  {
-    value: 'Option4',
-    label: 'Option4',
-  },
-  {
-    value: 'Option5',
-    label: 'Option5',
   },
 ]
 
 </script>
+<style scoped>
+</style>

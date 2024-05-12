@@ -15,8 +15,26 @@ interface ReqRegister {
     email: string
 }
 
-interface ReqChatgpt {
+interface UpdateUserInfo {
+    username: string
+    first_name: string,
+    last_name: string,
+    email: string
+}
 
+interface ReqChatgpt {
+    username: string
+    original_text: string
+    translated_text: string
+}
+
+interface ReqChatgptDelete {
+    username: string
+    time : string
+}
+
+interface ReqChatgptHistory {
+    username: string
 }
 
 interface ReqStatus {
@@ -24,7 +42,10 @@ interface ReqStatus {
     navStatus: string
 }
 
-
+interface Collection {
+    original_text: string
+    translated_text: string
+  }
 // Res是返回的参数，T是泛型，需要自己定义，返回对数统一管理***
 type Res<T> = Promise<ItypeAPI<T>>;
 // 一般情况下响应数据返回的这三个参数，
@@ -37,6 +58,9 @@ interface ItypeAPI<T> {
     code: number //返回后端自定义的200，404，500这种状态码
     user: User
     users: User[]
+    histories: History[]
+    collections: Collection[]
+    sum: Sum[]
     total_users: number
     total_pages: number
 }
@@ -49,6 +73,15 @@ interface User {
     first_name: string,
     last_name: string
 }
+interface Sum{
+    count: number
+}
+interface History {
+    username: string
+    original_text: string
+    translated_text: string
+    created_at: string
+  }
 
 //测试hello api
 export const TestHello = (): Res<null> =>
@@ -61,6 +94,36 @@ export const LoginApi = (data: ReqLogin): Res<null> =>
 //注册 api
 export const RegisterApi = (data: ReqRegister): Res<null> =>
     instance.post('/api/register', data);
+
+//上传历史记录
+export const HistoryApi = (data: ReqChatgpt): Res<null> =>
+    instance.post('/api/history', data);
+
+export const CollectApi = (data: ReqChatgpt): Res<null> =>
+    instance.post('/api/collect', data);
+
+
+export const GetHistoryApi = (data: ReqChatgptHistory): Res<null> =>
+    instance.post(`/api/GetHistory`, data);
+
+
+export const GetCollectionApi = (data: ReqChatgptHistory): Res<null> =>
+    instance.post(`/api/GetCollection`, data);
+
+export const SuperUserApi = (data: ReqChatgptHistory): Res<null> =>
+    instance.post(`/api/SuperUser`, data);
+
+export const GetHistorySumApi = (data: ReqChatgptHistory): Res<null> =>
+    instance.post(`/api/GetHistorySum`, data);
+
+export const GetActiveUser = (): Res<null> =>
+    instance.post(`/api/GetActiveUser`);
+
+export const DeleteHistoryApi = (data: ReqChatgptDelete): Res<null> =>
+    instance.post(`/api/DeleteHistory`, data);
+
+export const UpdateUserInfo = (data: UpdateUserInfo): Res<null> =>
+    instance.post(`/api/UpdateUserInfo`, data);
 
 //登出 api
 export const LogoutApi = (): Res<null> =>

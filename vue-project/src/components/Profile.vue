@@ -25,7 +25,7 @@ async function getUserInfo() {
     if (res.user.email === "")
       user.value.email = res.user.first_name + res.user.last_name + "@example.com"
     else
-      user.value.email = res.user.email
+    user.value.email = res.user.email
     user.value.first_name = res.user.first_name
     user.value.last_name = res.user.last_name
   } else {

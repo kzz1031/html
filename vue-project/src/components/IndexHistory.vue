@@ -1,0 +1,96 @@
+<script setup lang="ts">
+import {onBeforeMount, ref} from "vue";
+import {GetUserInfoByPageNum} from "@/request/api";
+import { Delete } from "@element-plus/icons-vue";
+import {useUserstore} from '@/store/user'
+import { ElMessage } from 'element-plus';
+import { GetHistoryApi } from "@/request/api";
+import { DeleteHistoryApi } from "@/request/api";
+interface History {
+  userName: string
+  original_text: string
+  translated_text: string
+  created_at: string
+}
+
+const tableData = ref<History[]>([]);
+const userStore = useUserstore();
+
+onBeforeMount(async () => {
+  let res = await GetHistoryApi({
+    username: userStore.userName
+  })
+  res.histories.forEach(item => {
+    tableData.value.push({
+      userName: item.username,
+      original_text: item.original_text,
+      translated_text: item.translated_text,
+      created_at: item.created_at
+    });
+  });
+  console.log("History");
+})
+
+const handleCurrentChange = async (index: number, row : History) => {
+
+  try {
+          const history ={
+          username: row.userName,
+          time : row.created_at
+        }
+        // 使用 HistoryApi 存储历史记录
+        const response = await DeleteHistoryApi(history);
+
+        if (response.success) {
+            ElMessage.success("历史记录删除成功");
+        } else {
+            ElMessage.error("历史记录删除失败");
+        }
+    } catch (error) {
+        console.error("删除历史记录时发生错误:", error);
+        ElMessage.error("删除历史记录时发生错误");
+    }
+};
+
+const fetchData = async () => {
+  // 在这里调用 API 获取数据，使用 currentPage 作为参数
+  
+};
+
+const handleDelete = (index: number) => {
+  // 删除指定索引的行
+  console.log(index);
+  tableData.value.splice(index, 1);
+};
+</script>
+
+<template>
+  <el-row>
+    <el-col :span="24">
+      <el-table :data="tableData" stripe style="width: 100%">
+        <el-table-column prop="userName" label="用户名" width="100"/>
+        <el-table-column prop="original_text" label="原文本" width="240"/>
+        <el-table-column prop="translated_text" label="翻译结果" width="240">
+          
+        </el-table-column>
+        <el-table-column prop="created_at" label="时间"/>
+        <el-table-column fixed="right" label="操作" width="60">
+          <template #default="scope">
+            <el-button @click="console.log(scope.row, scope.$index); handleDelete(scope.$index); handleCurrentChange( scope.$index, scope.row )" link type="primary" size="large">
+              <el-icon size="large"><Delete /></el-icon>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
+
+  <el-pagination
+      @current-change="handleCurrentChange"
+  />
+
+</template>
+
+<style scoped>
+
+</style>

@@ -1,3 +1,11 @@
+//Index.vue
+<script setup lang="ts">
+import AsideNavBar from "@/components/AsideNavBar.vue";
+import Header from "@/components/Header.vue";
+import SuperUser from "@/components/SuperUser.vue";
+import Info from "@/components/Info.vue";
+</script>
+
 <template>
   <el-container class="layout-container-demo" style="height: 100%">
     <el-aside width = 200px>
@@ -7,32 +15,13 @@
       <el-main>
         <div id="app">
           <Header></Header>
-          <div class="container"> 
-            <TranslateBox></TranslateBox>
-          </div>
-          <div class="container_statistics">
-            <Statistics></Statistics>
-          </div>
+          <Info></Info>
+          <SuperUser></SuperUser>
         </div>
       </el-main>
     </el-container>
   </el-container>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-import {useRouter} from 'vue-router'
-import TranslateBox from '@/components/TranslateBox.vue'
-import {useUserstore} from '@/store/user'
-import { ElMessage } from 'element-plus';
-import  AsideNavBar  from '@/components/AsideNavBar.vue'
-import Header from '@/components/Header.vue'
-import Statistics from '@/components/Statistics.vue'
-
-const userStore = useUserstore()
-const router = useRouter();
-
-</script>
 
 <style scoped>
 .layout-container-demo .el-header {

@@ -5,7 +5,10 @@ export const useUserstore = defineStore(
     {
         state() {
             return {
-                userName:'userName'
+                userName:'请登录',
+                is_superuser: false, 
+                search_sum: 0,
+                translate_style: 2
             }
         }
     }
