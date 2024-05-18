@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import {GetUserInfoByPageNum} from "@/request/api";
+import { Delete,Edit } from "@element-plus/icons-vue";
 
 interface User {
   userName: string
@@ -63,7 +64,17 @@ const fetchData = async () => {
         <el-table-column prop="userName" label="用户名" width="180"/>
         <el-table-column prop="first_name" label="姓" width="180"/>
         <el-table-column prop="last_name" label="名" width="180"/>
-        <el-table-column prop="email" label="邮箱"/>
+        <el-table-column prop="email" label="邮箱"/><!--
+        <el-table-column fixed="right" label="操作" width="120">
+          <template #default="scope">
+            <el-button @click="console.log(scope.row, scope.$index);" link type="primary" size="large">
+              <el-icon><Delete @click="handleCurrentChange"/></el-icon>
+            </el-button>
+            <el-button link type="primary" size="large">
+              <el-icon><Edit /></el-icon>
+            </el-button>
+          </template>
+        </el-table-column>-->
       </el-table>
     </el-col>
   </el-row>

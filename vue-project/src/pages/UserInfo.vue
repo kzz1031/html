@@ -2,8 +2,8 @@
 <script setup lang="ts">
 import AsideNavBar from "@/components/AsideNavBar.vue";
 import Header from "@/components/Header.vue";
-import IndexMain from "@/components/IndexMain.vue";
-
+import SuperUser from "@/components/SuperUser.vue";
+import Info from "@/components/Info.vue";
 </script>
 
 <template>
@@ -15,7 +15,8 @@ import IndexMain from "@/components/IndexMain.vue";
       <el-main>
         <div id="app">
           <Header></Header>
-          <IndexMain></IndexMain>
+          <Info></Info>
+          <SuperUser></SuperUser>
         </div>
       </el-main>
     </el-container>
