@@ -1,4 +1,4 @@
-//Login.vue
+<!-- //Login.vue
 <script setup lang="ts">
 
 import LoginForm from "@/components/LoginForm.vue";
@@ -38,5 +38,32 @@ import LoginForm from "@/components/LoginForm.vue";
 .form-container {
   width: 400px; /* 设置表单容器宽度 */
   /* 其他样式 */
+}
+</style> -->
+
+<template>
+  <div class="login-page">
+    <!-- 导入 LoginForm 组件 -->
+    <LoginForm />
+  </div>
+</template>
+
+<script>
+// 导入 LoginForm 组件
+import LoginForm from '@/components/LoginForm.vue';
+
+export default {
+  components: {
+    LoginForm
+  }
+}
+</script>
+
+<style>
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 使用 100% 的视口高度 */
 }
 </style>
