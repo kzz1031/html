@@ -30,14 +30,14 @@ onBeforeMount(async () => {
       <el-col :span="24">
         <el-table :data="tableData" stripe style="width: 100%">
           <!-- 原文本列 -->
-          <el-table-column prop="original_text" label="原文本" />
+          <el-table-column prop="original_text" label="原文本" class='original-column'/>
           
           <!-- 折叠面板列 -->
           <el-table-column type="expand">
             <template #default="{ row }">
               <!-- 展开的内容是翻译文本 -->
-              <div style="padding: 10px;">
-                <p style="font-size: 16px;">翻译结果:</p>
+              <div style="padding: 10px; margin-bottom: 0px;" class="expand-column">
+                <p style="font-size: 16px; color: #3375b9;">翻译结果:</p>
                 <p>{{ row.translated_text }}</p>
               </div>
             </template>
@@ -49,4 +49,10 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
+.original-column {
+  background-color: #3375b9; /* 设置原文本列的背景颜色 */
+}
+.expand-column {
+  background-color: #CFD3DC; /* 设置展开文本列的背景颜色 */
+}
 </style>

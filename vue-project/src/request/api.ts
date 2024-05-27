@@ -35,8 +35,13 @@ interface ReqChatgptDelete {
 
 interface ReqChatgptHistory {
     username: string
+    order_by_time : string
+    search_content: string
 }
 
+interface ReqChat{
+    username: string
+}
 interface ReqStatus {
     id: string
     navStatus: string
@@ -77,12 +82,19 @@ interface Sum{
     count: number
 }
 interface History {
-    username: string
-    original_text: string
-    translated_text: string
+    username: string,
+    original_text: string,
+    translated_text: string,
     created_at: string
   }
 
+interface WordList {
+    username : string,
+    word: string,
+    meaning : string,
+    prop : string,
+    rate : number 
+}
 //测试hello api
 export const TestHello = (): Res<null> =>
     instance.get('/api/hello');
@@ -99,6 +111,9 @@ export const RegisterApi = (data: ReqRegister): Res<null> =>
 export const HistoryApi = (data: ReqChatgpt): Res<null> =>
     instance.post('/api/history', data);
 
+export const InsertWordApi = (data: WordList): Res<null> =>
+    instance.post('/api/insertword', data);
+
 export const CollectApi = (data: ReqChatgpt): Res<null> =>
     instance.post('/api/collect', data);
 
@@ -106,14 +121,16 @@ export const CollectApi = (data: ReqChatgpt): Res<null> =>
 export const GetHistoryApi = (data: ReqChatgptHistory): Res<null> =>
     instance.post(`/api/GetHistory`, data);
 
-
-export const GetCollectionApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetCollectionApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/GetCollection`, data);
 
-export const SuperUserApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetWordApi = (data: ReqChat): Res<null> =>
+    instance.post(`/api/GetWord`, data);
+
+export const SuperUserApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/SuperUser`, data);
 
-export const GetHistorySumApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetHistorySumApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/GetHistorySum`, data);
 
 export const GetActiveUser = (): Res<null> =>
