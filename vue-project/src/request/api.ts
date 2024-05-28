@@ -64,6 +64,7 @@ interface ItypeAPI<T> {
     user: User
     users: User[]
     histories: History[]
+    words : Word[]
     collections: Collection[]
     sum: Sum[]
     total_users: number
@@ -94,6 +95,16 @@ interface WordList {
     meaning : string,
     prop : string,
     rate : number 
+}
+interface Word {
+    word: string,
+    meaning : string,
+    prop : string,
+    rate : number,
+    created_at : string,
+    updated_at : string, 
+    username : string
+    
 }
 //测试hello api
 export const TestHello = (): Res<null> =>

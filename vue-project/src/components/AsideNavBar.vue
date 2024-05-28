@@ -62,8 +62,8 @@ function jumptoUserInfo() {
 </script>
 
 <template>
-  <div class="asider" ref="vantaRef">
-    <el-aside width="200px">
+  <div class="asider">
+    <el-aside width="100%">
       <el-scrollbar>
         <el-menu :default-openeds="['1', '2']">
           <el-sub-menu index="1">
@@ -112,11 +112,12 @@ function jumptoUserInfo() {
 }
 .layout-container-demo .el-aside {
   color: var(--el-text-color-primary);
-  background: var(--el-color-primary-light-8);
+  /*background: var(--el-color-primary-light-8);*/
+  background: white;
   height: 100%;
 }
 .layout-container-demo .el-menu {
-  border-right: none;
+  border-right:none;
 }
 .layout-container-demo .el-main {
   padding: 0;

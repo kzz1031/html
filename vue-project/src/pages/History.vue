@@ -5,6 +5,7 @@ import Header from "@/components/Header.vue";
 import IndexHistory from "@/components/IndexHistory.vue";
 import { GetHistoryApi } from "@/request/api";
 import {onBeforeMount, ref} from "vue";
+import Wordbutton from "@/components/Wordbutton.vue"
 import {useUserstore} from '@/store/user'
 
 const userStore=useUserstore()
@@ -27,6 +28,7 @@ const userStore=useUserstore()
     </el-container>
 
   </el-container>
+  <Wordbutton></Wordbutton>
 </template>
 
 <style scoped>

@@ -14,6 +14,7 @@
         </el-main>
       </el-container>
     </el-container>
+    <Wordbutton></Wordbutton>
   </template>
   
   <script lang="ts" setup>
@@ -27,7 +28,7 @@
   import LongtextBox from '@/components/LongtextBox.vue'
   import * as THREE from "three";
   import WAVES from "vanta/dist/vanta.waves.min";
-
+  import Wordbutton from "@/components/Wordbutton.vue"
   const userStore = useUserstore()
   const router = useRouter();
   const vantaRef = ref(null);

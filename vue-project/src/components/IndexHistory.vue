@@ -132,5 +132,6 @@ const handleDelete = (index: number) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 </style>

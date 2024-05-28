@@ -112,7 +112,7 @@ const active_users = ref(0);
 const userStore = useUserstore();
 const vantaRef = ref(null);
 let vantaEffect: { destroy: () => void };
-/*
+
 onBeforeMount(async () => {
   let res = await GetHistorySumApi({
     username: userStore.userName,
@@ -125,18 +125,9 @@ onBeforeMount(async () => {
   const res2 = await GetActiveUser();
   active_users.value = res2.total_users;
 
-  vantaEffect = NET({
-    el: vantaRef.value,
-    THREE: THREE,
-    backgroundColor: 0xffffff
-  });
 });
 
-onBeforeUnmount(() => {
-  if (vantaEffect) {
-    vantaEffect.destroy();
-  }
-});*/
+
 </script>
 
 <style scoped>

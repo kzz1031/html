@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-container-demo" style="height: 100%">
-    <el-aside width="200px">
+    <el-aside width="200px" style="height: 100%;">
       <AsideNavBar></AsideNavBar>
     </el-aside>
     <el-container>
@@ -37,6 +37,7 @@ const userStore = useUserstore();
 const router = useRouter();
 const vantaRef = ref(null);
 let vantaEffect: { destroy: () => void };
+
 onMounted(() => {
   vantaEffect = WAVES({
     el: vantaRef.value,
