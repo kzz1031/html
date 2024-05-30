@@ -46,6 +46,11 @@ function jumptoUserInfo() {
   console.log ("userinfo")
   router.push('/userinfo')
 }
+
+function jumptoSetPreferences() {
+  router.push('/set-preferences');
+}
+
 </script>
 
 <template>
@@ -67,6 +72,7 @@ function jumptoUserInfo() {
             </template>
               <el-menu-item index="2-1" @click="jumptoUserInfo()">查看用户信息</el-menu-item>
               <el-menu-item index="2-2" @click="jumptoUser()">管理员</el-menu-item>
+              <el-menu-item index="2-3" @click="jumptoSetPreferences()">页面偏好设置<el-icon><CircleCheck /></el-icon></el-menu-item>
           </el-sub-menu>
          
         </el-menu>

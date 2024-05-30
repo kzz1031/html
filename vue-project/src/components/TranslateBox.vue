@@ -2,10 +2,11 @@
 import { ref } from 'vue'
 import {Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck} from '@element-plus/icons-vue'
 import Selector from './Selector.vue'
-import { ElMessage } from 'element-plus';
+import { ElMessage,  ElMessageBox } from 'element-plus';
 import {useUserstore} from '@/store/user'
 import {HistoryApi,CollectApi} from "@/request/api";
 import Slider from './Slider.vue'
+import PreferenceScroll from './PreferenceScroll.vue'
 
 const userStore=useUserstore()
 const inputText = ref('');
@@ -25,6 +26,10 @@ const handleClick = () => {
   console.log("handleclick");
   emit('translate_sum');
 }
+
+// 从 Pinia store 直接获取方向偏好
+const drawer = ref(false);
+const drawerDirection = ref(userStore.direction);
 
 async function translateText() {
   handleClick();
@@ -77,9 +82,24 @@ async function translateText() {
 }
 
 async function setPreference() {
-  
+  if (userStore.userName === '请登录') {
+    ElMessage.error("请登录后再设置偏好");
+  } else {
+    drawer.value = true; // 打开抽屉
+  }
 }
 
+async function beforeCloseDrawer(done: () => void) {
+  ElMessageBox.confirm('您确定要关闭字词翻译设置吗?', '确认', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    done(); // 关闭抽屉
+  }).catch(() => {
+    // 用户取消操作
+  });
+}
 async function storeTranslationHistory(originalText:string, translatedText:string) {
     try {
         const historyData = {
@@ -149,6 +169,10 @@ function copyTranslatedTextToClipboard() {
     ElMessage.error("复制翻译结果到剪贴板时发生错误");
   });
 }
+// 监听方向变化
+// watch(() => userStore.direction, (newVal) => {
+//   drawerDirection.value = newVal;
+// });
 </script>
 
 <template>
@@ -167,7 +191,21 @@ function copyTranslatedTextToClipboard() {
     <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
     <el-button type="primary" :icon="Delete"  @click="clearInputText" title="清空文本框"/>
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
-    <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好">个人偏好</el-button>
+    <el-drawer
+    v-model="drawer"
+    :before-close="beforeCloseDrawer"
+    :direction="drawerDirection"
+    title="字词翻译偏好">
+    <template #title>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <span>字词翻译偏好</span>
+          <el-button type="primary" :icon="CircleCheck" @click="setPreference">保存字词翻译偏好</el-button>
+        </div>
+      </template>
+    <!-- 抽屉内容 -->
+    <PreferenceScroll></PreferenceScroll>
+    </el-drawer>
+    <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
   </div>
 </template>
 
