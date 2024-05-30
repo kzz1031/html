@@ -1,13 +1,13 @@
 <template>
   <el-container class="layout-container-demo" style="height: 100%">
-    <el-aside width = 200px>
+    <el-aside width="200px">
       <AsideNavBar></AsideNavBar>
     </el-aside>
     <el-container>
       <el-main>
         <div id="app">
           <Header></Header>
-          <div class="container"> 
+          <div class="container" ref="vantaRef">
             <TranslateBox></TranslateBox>
           </div>
           <div class="container_statistics">
@@ -16,22 +16,40 @@
         </div>
       </el-main>
     </el-container>
+    <Wordbutton></Wordbutton>
   </el-container>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {useRouter} from 'vue-router'
-import TranslateBox from '@/components/TranslateBox.vue'
-import {useUserstore} from '@/store/user'
-import { ElMessage } from 'element-plus';
-import  AsideNavBar  from '@/components/AsideNavBar.vue'
-import Header from '@/components/Header.vue'
-import Statistics from '@/components/Statistics.vue'
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import TranslateBox from "@/components/TranslateBox.vue";
+import { useUserstore } from "@/store/user";
+import { ElMessage } from "element-plus";
+import AsideNavBar from "@/components/AsideNavBar.vue";
+import Header from "@/components/Header.vue";
+import Statistics from "@/components/Statistics.vue";
+import Wordbutton from "@/components/Wordbutton.vue"
+import * as THREE from "three";
+import WAVES from "vanta/dist/vanta.waves.min";
 
-const userStore = useUserstore()
+const userStore = useUserstore();
 const router = useRouter();
+const vantaRef = ref(null);
+let vantaEffect: { destroy: () => void };
+onMounted(() => {
+  vantaEffect = WAVES({
+    el: vantaRef.value,
+    THREE: THREE,
 
+  });
+});
+
+onBeforeUnmount(() => {
+  if (vantaEffect) {
+    vantaEffect.destroy();
+  }
+});
 </script>
 
 <style scoped>
@@ -75,9 +93,9 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .container_statistics {
-  width: 90%; /* 调整宽度 */
+  width: 80%; /* 调整宽度 */
   max-width: 1200px; /* 调整最大宽度 */
-  height: 180px;
+  height: 160px;
   margin-top: 20px;
   padding: 20px;
   margin-left: auto;
@@ -97,8 +115,9 @@ button:hover {
   background-color: #0056b3;
 }
 
-.user_info{
+.user_info {
   font-size: 15px;
   font-family: sans-serif;
 }
+/* Fixed button styles */
 </style>

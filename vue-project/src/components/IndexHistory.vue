@@ -1,25 +1,33 @@
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import {GetUserInfoByPageNum} from "@/request/api";
-import { Delete } from "@element-plus/icons-vue";
+import { Delete,Search } from "@element-plus/icons-vue";
 import {useUserstore} from '@/store/user'
 import { ElMessage } from 'element-plus';
 import { GetHistoryApi } from "@/request/api";
 import { DeleteHistoryApi } from "@/request/api";
+import router from "@/router";
 interface History {
   userName: string
   original_text: string
   translated_text: string
   created_at: string
 }
+const input1 = ref('')
+const radio1 = ref('1')
 
 const tableData = ref<History[]>([]);
 const userStore = useUserstore();
 
 onBeforeMount(async () => {
-  if(userStore.userName == '请登录') ElMessage("用户未登录");
+  if(userStore.userName == '请登录'){
+    ElMessage("用户未登录");
+    router.push('/')
+  } 
   let res = await GetHistoryApi({
-    username: userStore.userName
+    username: userStore.userName,
+    order_by_time : radio1.value,
+    search_content: input1.value
   })
   res.histories.forEach(item => {
     tableData.value.push({
@@ -33,6 +41,21 @@ onBeforeMount(async () => {
 })
 
 const handleCurrentChange = async ( ) => {
+  tableData.value = []; // 清空表格数据
+
+  let res = await GetHistoryApi({
+    username: userStore.userName,
+    order_by_time : radio1.value,
+    search_content: input1.value
+  })
+  res.histories.forEach(item => {
+    tableData.value.push({
+      userName: item.username,
+      original_text: item.original_text,
+      translated_text: item.translated_text,
+      created_at: item.created_at
+    });
+  });
 }
 
 const deletehistory = async (index: number, row : History) => {
@@ -57,7 +80,7 @@ const deletehistory = async (index: number, row : History) => {
 };
 
 const fetchData = async () => {
-  // 在这里调用 API 获取数据，使用 currentPage 作为参数
+  
   
 };
 
@@ -69,14 +92,23 @@ const handleDelete = (index: number) => {
 </script>
 
 <template>
-  <div>
+  <div class="center-container">
+    <el-input v-model="input1" style="width: 500px" size="large" placeholder="Please Input">
+      <template #append>
+        <el-button :icon="Search" @click="handleCurrentChange"/>
+      </template>
+    </el-input>
+    <el-radio-group v-model="radio1" class="ml-4" @change="handleCurrentChange">
+      <el-radio value="1" size="large" style="margin-left: 50px">时间降序</el-radio>
+      <el-radio value="2" size="large">时间升序</el-radio>
+    </el-radio-group>
   </div>
   <el-row>
     <el-col :span="24">
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="userName" label="用户名" width="100"/>
-        <el-table-column prop="original_text" label="原文本" width="240"/>
-        <el-table-column prop="translated_text" label="翻译结果" width="240"/>
+        <el-table-column prop="original_text" label="原文本" width="500"/>
+        <el-table-column prop="translated_text" label="翻译结果" width="500"/>
         <el-table-column prop="created_at" label="时间"/>
         <el-table-column fixed="right" label="操作" width="60">
           <template #default="scope">
@@ -96,5 +128,9 @@ const handleDelete = (index: number) => {
 </template>
 
 <style scoped>
-
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

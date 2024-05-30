@@ -67,6 +67,7 @@ import { ElMessage } from "element-plus";
 import {GetUserInfoByUserName} from "@/request/api";
 import {useUserstore} from '@/store/user'
 import { UpdateUserInfo } from "@/request/api";
+import router from "@/router";
 const userStore = useUserstore();
 
 const showDialog = ref(false);
@@ -122,6 +123,10 @@ async function handleSubmit() {
 }
 
 onBeforeMount(() => {
+  if(userStore.userName == '请登录'){
+    ElMessage('用户未登录')
+    router.push('/')
+  }
   getUserInfo()
 });
 

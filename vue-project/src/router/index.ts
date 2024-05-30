@@ -13,7 +13,13 @@ import History from "@/pages/History.vue";
 import UserInfo from "@/pages/UserInfo.vue";
 import Collection from "@/pages/collection.vue";
 import Welcome from "@/pages/Welcome.vue";
+<<<<<<< HEAD
 import SetPreferences from "@/pages/SetPreferences.vue";
+=======
+import Longtext from "@/pages/Longtext.vue"
+import Wordlist from "@/pages/Wordlist.vue";
+import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs";
+>>>>>>> 0991224b3139a711c2da725873ee2b8b400fc253
 const routes =
     [
         {
@@ -50,6 +56,16 @@ const routes =
             path: '/welcome',
             name: 'Welcome',
             component: Welcome,
+        },
+        {
+            path: '/longtext',
+            name: 'Longtext',
+            component: Longtext,
+        },
+        {
+            path: '/wordlist',
+            name: 'Wordlist',
+            component: Wordlist
         },
         {
             path: '/index',
