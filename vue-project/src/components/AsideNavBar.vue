@@ -96,18 +96,9 @@ function jumptoSetPreferences() {
             <template #title>
               <el-icon><Setting /></el-icon><el-text size="large">设置</el-text>
             </template>
-<<<<<<< HEAD
               <el-menu-item index="2-1" @click="jumptoUserInfo()">查看用户信息</el-menu-item>
               <el-menu-item index="2-2" @click="jumptoUser()">管理员</el-menu-item>
               <el-menu-item index="2-3" @click="jumptoSetPreferences()">页面偏好设置<el-icon><CircleCheck /></el-icon></el-menu-item>
-=======
-            <el-menu-item index="2-1" @click="jumptoUserInfo()"
-              >查看用户信息</el-menu-item
-            >
-            <el-menu-item index="2-2" @click="jumptoUser()"
-              >管理员</el-menu-item
-            >
->>>>>>> 0991224b3139a711c2da725873ee2b8b400fc253
           </el-sub-menu>
         </el-menu>
       </el-scrollbar>
@@ -123,7 +114,8 @@ function jumptoSetPreferences() {
 }
 .layout-container-demo .el-aside {
   color: var(--el-text-color-primary);
-  background: var(--el-color-primary-light-8);
+  /*background: var(--el-color-primary-light-8);*/
+  background: white;
   height: 100%;
 }
 .layout-container-demo .el-menu {

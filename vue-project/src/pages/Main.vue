@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-container-demo" style="height: 100%">
-    <el-aside width="200px">
+    <el-aside width="200px" style="height: 100%;">
       <AsideNavBar></AsideNavBar>
     </el-aside>
     <el-container>

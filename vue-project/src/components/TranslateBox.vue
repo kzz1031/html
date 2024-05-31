@@ -1,5 +1,4 @@
 <script setup lang="ts">
-<<<<<<< HEAD
 import { ref } from 'vue'
 import {Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck} from '@element-plus/icons-vue'
 import Selector from './Selector.vue'
@@ -8,24 +7,6 @@ import {useUserstore} from '@/store/user'
 import {HistoryApi,CollectApi} from "@/request/api";
 import Slider from './Slider.vue'
 import PreferenceScroll from './PreferenceScroll.vue'
-=======
-import { ref, watch } from "vue";
-import {
-  Minus,
-  Plus,
-  Refresh,
-  Edit,
-  Delete,
-  Share,
-  Star,
-  CircleCheck,
-} from "@element-plus/icons-vue";
-import Selector from "./Selector.vue";
-import { ElMessage } from "element-plus";
-import { useUserstore } from "@/store/user";
-import { HistoryApi, CollectApi } from "@/request/api";
-import Slider from "./Slider.vue";
->>>>>>> 0991224b3139a711c2da725873ee2b8b400fc253
 
 const userStore = useUserstore();
 const inputText = ref("");
@@ -48,13 +29,6 @@ const handleClick = () => {
   emit("translate_sum");
 };
 
-watch(inputText, (newText) => {
-  inputSentences.value = splitTextIntoSentences(newText);
-});
-
-watch(translatedText, (newText) => {
-  translatedSentences.value = splitTextIntoSentences(newText);
-});
 
 function splitTextIntoSentences(text: string): string[] {
   return text
@@ -80,7 +54,6 @@ async function translateText() {
   if (inputText.value.length === 0) {
     loading.value = false;
     ElMessage.error("输入文本为空");
-<<<<<<< HEAD
   }
   else try {
     const response = await fetch(apiUrl, {
@@ -134,49 +107,6 @@ async function beforeCloseDrawer(done: () => void) {
     // 用户取消操作
   });
 }
-async function storeTranslationHistory(originalText:string, translatedText:string) {
-=======
-  } else
->>>>>>> 0991224b3139a711c2da725873ee2b8b400fc253
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content:
-                "请将下面这段话从" +
-                language.value +
-                style.value +
-                "(直接把译文给我):" +
-                inputText.value,
-            },
-          ],
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      translatedText.value = data.choices[0].message.content; // 获取助手的回复内容
-      handleClick();
-      if (!(userStore.userName === "请登录"))
-        await storeTranslationHistory(inputText.value, translatedText.value);
-      else console.log(userStore.userName);
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-    } finally {
-      loading.value = false;
-    }
-}
-
-async function setPreference() {}
 
 async function storeTranslationHistory(
   originalText: string,
@@ -286,7 +216,6 @@ function copyTranslatedTextToClipboard() {
     ></textarea>
   </div>
   <div class="container_foot">
-<<<<<<< HEAD
     <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
     <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
     <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
@@ -307,30 +236,6 @@ function copyTranslatedTextToClipboard() {
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
     <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
-=======
-    <el-button class="font_size_button" @click="decreaseFontSize"
-      ><el-icon><Minus /></el-icon
-    ></el-button>
-    <el-button class="font_size_button" @click="increaseFontSize"
-      ><el-icon><Plus /></el-icon
-    ></el-button>
-    <el-button
-      type="primary"
-      :icon="Share"
-      @click="copyTranslatedTextToClipboard"
-      title="复制翻译结果"
-    />
-    <el-button
-      type="primary"
-      :icon="Delete"
-      @click="clearInputText"
-      title="清空文本框"
-    />
-    <el-button type="primary" :icon="Star" @click="collect" title="收藏" />
-    <el-button type="primary" :icon="CircleCheck" title="设置个人偏好"
-      >个人偏好</el-button
-    >
->>>>>>> 0991224b3139a711c2da725873ee2b8b400fc253
   </div>
 </template>
 

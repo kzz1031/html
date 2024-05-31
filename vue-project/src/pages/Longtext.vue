@@ -14,20 +14,20 @@
         </el-main>
       </el-container>
     </el-container>
+    <Wordbutton></Wordbutton>
   </template>
   
   <script lang="ts" setup>
   import { onBeforeUnmount, onMounted, ref } from 'vue'
   import {useRouter} from 'vue-router'
-  import TranslateBox from '@/components/TranslateBox.vue'
   import {useUserstore} from '@/store/user'
-  import { ElMessage } from 'element-plus';
+
   import  AsideNavBar  from '@/components/AsideNavBar.vue'
   import Header from '@/components/Header.vue'
   import LongtextBox from '@/components/LongtextBox.vue'
   import * as THREE from "three";
   import WAVES from "vanta/dist/vanta.waves.min";
-
+  import Wordbutton from '@/components/Wordbutton.vue'
   const userStore = useUserstore()
   const router = useRouter();
   const vantaRef = ref(null);

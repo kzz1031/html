@@ -20,10 +20,10 @@
         </el-form-item>
         <el-form-item label="词性">
           <el-select v-model="partOfSpeech" placeholder="请选择词性">
-            <el-option label="n." value="noun"></el-option>
-            <el-option label="v." value="verb"></el-option>
-            <el-option label="adj." value="adjective"></el-option>
-            <el-option label="adv." value="adverb"></el-option>
+            <el-option label="n." value="n."></el-option>
+            <el-option label="v." value="v."></el-option>
+            <el-option label="adj." value="adj."></el-option>
+            <el-option label="adv." value="adv."></el-option>
           </el-select>
         </el-form-item>
         <div class="form-footer">
