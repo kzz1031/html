@@ -8,6 +8,7 @@ import {
   House,
   Star,
   HomeFilled,
+  Notebook,
   Memo,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";

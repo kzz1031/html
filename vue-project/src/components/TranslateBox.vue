@@ -217,6 +217,7 @@ function copyTranslatedTextToClipboard() {
     <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
     <el-button type="primary" :icon="Delete"  @click="clearInputText" title="清空文本框"/>
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
+    <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
     <el-drawer
     v-model="drawer"
     :before-close="beforeCloseDrawer"
@@ -231,7 +232,7 @@ function copyTranslatedTextToClipboard() {
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
-    <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
+    
   </div>
 </template>
 
