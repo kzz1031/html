@@ -8,7 +8,6 @@ import {
   House,
   Star,
   HomeFilled,
-  Notebook,
   Memo,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
@@ -20,6 +19,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const userStore = useUserstore();
 const router = useRouter();
+
 
 function change(key: string, keyPath: string[]) {
   console.log(key);
@@ -59,11 +59,16 @@ function jumptoUserInfo() {
   console.log("userinfo");
   router.push("/userinfo");
 }
+
+function jumptoSetPreferences() {
+  router.push('/set-preferences');
+}
+
 </script>
 
 <template>
-  <div class="asider">
-    <el-aside width="100%">
+  <div class="asider" ref="vantaRef">
+    <el-aside width="200px">
       <el-scrollbar>
         <el-menu :default-openeds="['1', '2']">
           <el-sub-menu index="1">
@@ -91,12 +96,9 @@ function jumptoUserInfo() {
             <template #title>
               <el-icon><Setting /></el-icon><el-text size="large">设置</el-text>
             </template>
-            <el-menu-item index="2-1" @click="jumptoUserInfo()"
-              >查看用户信息</el-menu-item
-            >
-            <el-menu-item index="2-2" @click="jumptoUser()"
-              >管理员</el-menu-item
-            >
+              <el-menu-item index="2-1" @click="jumptoUserInfo()">查看用户信息</el-menu-item>
+              <el-menu-item index="2-2" @click="jumptoUser()">管理员</el-menu-item>
+              <el-menu-item index="2-3" @click="jumptoSetPreferences()">页面偏好设置<el-icon><CircleCheck /></el-icon></el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-scrollbar>
@@ -132,7 +134,7 @@ function jumptoUserInfo() {
 
 /* Add hover effect for menu items */
 .el-menu-item:hover {
-  transform: scale(1.2); /* Scale up the item */
+  transform: scale(1.20); /* Scale up the item */
   transition: transform 0.3s ease; /* Smooth transition */
 }
 

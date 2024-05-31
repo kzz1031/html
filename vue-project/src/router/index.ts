@@ -13,6 +13,7 @@ import History from "@/pages/History.vue";
 import UserInfo from "@/pages/UserInfo.vue";
 import Collection from "@/pages/collection.vue";
 import Welcome from "@/pages/Welcome.vue";
+import SetPreferences from "@/pages/SetPreferences.vue";
 import Longtext from "@/pages/Longtext.vue"
 import Wordlist from "@/pages/Wordlist.vue";
 import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs";
@@ -87,8 +88,13 @@ const routes =
         {
             path: '/Test',
             name: 'Test',
-            component: Test
-        }
+            component: Test,
+        },
+        {
+            path: '/set-preferences',
+            name: 'SetPreferences',
+            component: SetPreferences
+        }        
     ];
 
 const router = createRouter({

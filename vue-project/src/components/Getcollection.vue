@@ -52,7 +52,6 @@ onBeforeMount(async () => {
 .original-column {
   background-color: #3375b9; /* 设置原文本列的背景颜色 */
 }
-
 .expand-column {
   background-color: #CFD3DC; /* 设置展开文本列的背景颜色 */
 }

@@ -1,20 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import {
-  Minus,
-  Plus,
-  Refresh,
-  Edit,
-  Delete,
-  Share,
-  Star,
-  CircleCheck,
-} from "@element-plus/icons-vue";
-import Selector from "./Selector.vue";
-import { ElMessage } from "element-plus";
-import { useUserstore } from "@/store/user";
-import { HistoryApi, CollectApi } from "@/request/api";
-import Slider from "./Slider.vue";
+import { ref } from 'vue'
+import {Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck} from '@element-plus/icons-vue'
+import Selector from './Selector.vue'
+import { ElMessage,  ElMessageBox } from 'element-plus';
+import {useUserstore} from '@/store/user'
+import {HistoryApi,CollectApi} from "@/request/api";
+import Slider from './Slider.vue'
+import PreferenceScroll from './PreferenceScroll.vue'
 
 const userStore = useUserstore();
 const inputText = ref("");
@@ -37,19 +29,16 @@ const handleClick = () => {
   emit("translate_sum");
 };
 
-watch(inputText, (newText) => {
-  inputSentences.value = splitTextIntoSentences(newText);
-});
-
-watch(translatedText, (newText) => {
-  translatedSentences.value = splitTextIntoSentences(newText);
-});
 
 function splitTextIntoSentences(text: string): string[] {
   return text
     .split(/(?<=[。！？\.\!\?])/)
     .filter((sentence) => sentence.trim().length > 0);
 }
+
+// 从 Pinia store 直接获取方向偏好
+const drawer = ref(false);
+const drawerDirection = ref(userStore.direction);
 
 async function translateText() {
   const apiKey = "sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9"; // 替换成你的 API 密钥
@@ -65,46 +54,59 @@ async function translateText() {
   if (inputText.value.length === 0) {
     loading.value = false;
     ElMessage.error("输入文本为空");
-  } else
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "user",
-              content:
-                "请将下面这段话从" +
-                language.value +
-                style.value +
-                "(直接把译文给我):" +
-                inputText.value,
-            },
-          ],
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      translatedText.value = data.choices[0].message.content; // 获取助手的回复内容
-      handleClick();
-      if (!(userStore.userName === "请登录"))
-        await storeTranslationHistory(inputText.value, translatedText.value);
-      else console.log(userStore.userName);
-    } catch (error) {
-      console.error("There was a problem with the fetch operation:", error);
-    } finally {
-      loading.value = false;
+  }
+  else try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: 'user',
+            content: '请将下面这段话从' + language.value + style.value + '(直接把译文给我):' + inputText.value
+          }
+        ]
+      })
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    const data = await response.json();
+    translatedText.value = data.choices[0].message.content; // 获取助手的回复内容
+
+    if(!(userStore.userName === '请登录'))  await storeTranslationHistory(inputText.value, translatedText.value);
+      else console.log(userStore.userName);
+
+  } catch (error) {
+    console.error('There was a problem with the fetch operation:', error);
+  } finally{
+    loading.value = false;
+  }
 }
 
-async function setPreference() {}
+async function setPreference() {
+  if (userStore.userName === '请登录') {
+    ElMessage.error("请登录后再设置偏好");
+  } else {
+    drawer.value = true; // 打开抽屉
+  }
+}
+
+async function beforeCloseDrawer(done: () => void) {
+  ElMessageBox.confirm('您确定要关闭字词翻译设置吗?', '确认', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    done(); // 关闭抽屉
+  }).catch(() => {
+    // 用户取消操作
+  });
+}
 
 async function storeTranslationHistory(
   originalText: string,
@@ -210,28 +212,26 @@ function copyTranslatedTextToClipboard() {
     ></textarea>
   </div>
   <div class="container_foot">
-    <el-button class="font_size_button" @click="decreaseFontSize"
-      ><el-icon><Minus /></el-icon
-    ></el-button>
-    <el-button class="font_size_button" @click="increaseFontSize"
-      ><el-icon><Plus /></el-icon
-    ></el-button>
-    <el-button
-      type="primary"
-      :icon="Share"
-      @click="copyTranslatedTextToClipboard"
-      title="复制翻译结果"
-    />
-    <el-button
-      type="primary"
-      :icon="Delete"
-      @click="clearInputText"
-      title="清空文本框"
-    />
-    <el-button type="primary" :icon="Star" @click="collect" title="收藏" />
-    <el-button type="primary" :icon="CircleCheck" title="设置个人偏好"
-      >个人偏好</el-button
-    >
+    <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
+    <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
+    <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
+    <el-button type="primary" :icon="Delete"  @click="clearInputText" title="清空文本框"/>
+    <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
+    <el-drawer
+    v-model="drawer"
+    :before-close="beforeCloseDrawer"
+    :direction="drawerDirection"
+    title="字词翻译偏好">
+    <template #title>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <span>字词翻译偏好</span>
+          <el-button type="primary" :icon="CircleCheck" @click="setPreference">保存字词翻译偏好</el-button>
+        </div>
+      </template>
+    <!-- 抽屉内容 -->
+    <PreferenceScroll></PreferenceScroll>
+    </el-drawer>
+    <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
   </div>
 </template>
 
