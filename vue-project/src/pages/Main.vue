@@ -82,7 +82,7 @@ body {
 
 .container {
   width: 90%; /* 调整宽度 */
-  max-width: 1200px; /* 调整最大宽度 */
+  max-width: 1400px; /* 调整最大宽度 */
   height: 500px;
   margin-top: 20px;
   padding: 20px;

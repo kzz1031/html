@@ -124,7 +124,6 @@ onBeforeMount(async () => {
   console.log("getactiveuser");
   const res2 = await GetActiveUser();
   active_users.value = res2.total_users;
-
 });
 
 

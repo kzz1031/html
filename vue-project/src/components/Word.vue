@@ -4,6 +4,8 @@ import { GetWordApi } from "@/request/api";
 import { useUserstore } from "@/store/user";
 import { ElMessage } from "element-plus";
 import { Search, Delete, View } from "@element-plus/icons-vue";
+import { DeleteWordApi } from "@/request/api";
+import { UpdateWord } from "@/request/api";
 import router from "@/router";
 
 interface Word {
@@ -48,10 +50,29 @@ const showWordDialog = (word: Word) => {
   currentWord.value = { ...word };
 };
 
-const updateWord = () => {
+const updateWord = async (currentWord:Word) => {
   // 发送更新单词信息的请求，这里需要根据实际情况调用API
   // 更新成功后关闭对话框
+  const Word = {
+    word: currentWord.word,
+    prop: currentWord.prop,
+    meaning: currentWord.meaning,
+    username : userStore.userName,
+    rate : currentWord.rate
+  }
   wordDialogVisible.value = false;
+  const response = await UpdateWord(Word);
+  if(response.success) {
+    ElMessage.success('修改成功')
+    const index = tableData.value.findIndex((w) => w.word === currentWord.word);
+    if (index !== -1) {
+      tableData.value[index] = { ...currentWord };
+    }
+  }
+  else {
+    ElMessage.error('修改失败')
+  }
+  
 };
 
 const filteredWords = computed(() => {
@@ -71,8 +92,20 @@ const sortByRate = () => {
   tableData.value.sort((a, b) => b.rate - a.rate);
 };
 
-const handleDelete = (index: number) => {
+const handleDelete = async (index: number, row: any) => {
   tableData.value.splice(index, 1);
+  const Word ={
+          username: userStore.userName,
+          word : row.word
+        }
+  const response = await DeleteWordApi(Word);
+  if(response.success){
+    ElMessage.success('删除单词成功')
+  }
+  else {
+    ElMessage.error('删除单词失败')
+  }
+  return;
 };
 </script>
 
@@ -102,10 +135,10 @@ const handleDelete = (index: number) => {
         <el-rate v-model="scope.row.rate" disabled></el-rate>
       </template>
     </el-table-column>
-    <el-table-column label="操作" width="60">
+    <el-table-column label="操作" width="60" align="right">
       <template #default="scope">
         <el-button
-          @click="handleDelete(scope.$index)"
+          @click="handleDelete(scope.$index, scope.row)"
           link
           type="primary"
           size="large"
@@ -114,7 +147,7 @@ const handleDelete = (index: number) => {
         </el-button>
       </template>
     </el-table-column>
-    <el-table-column label="详情" width="60">
+    <el-table-column label="详情" width="60" align="right">
       <template #default="scope">
         <el-button
           @click="showWordDialog(scope.row)"
@@ -127,7 +160,7 @@ const handleDelete = (index: number) => {
       </template>
     </el-table-column>
   </el-table>
-  <el-dialog title="单词信息" v-model="wordDialogVisible" width="30%">
+  <el-dialog title="单词信息" v-model="wordDialogVisible" width="30%" draggable="true">
     <el-form :model="currentWord" label-width="120px">
       <el-form-item label="单词">
         <el-input v-model="currentWord.word" disabled></el-input>
@@ -150,7 +183,7 @@ const handleDelete = (index: number) => {
         <el-rate v-model="currentWord.rate"></el-rate>
       </el-form-item>
     <div slot="footer">
-      <el-button @click="updateWord">修改</el-button>
+      <el-button @click="updateWord(currentWord)">修改</el-button>
     </div>
     </el-form>
   </el-dialog>

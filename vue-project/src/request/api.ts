@@ -33,6 +33,11 @@ interface ReqChatgptDelete {
     time : string
 }
 
+interface WordDelete {
+    username: string
+    word : string
+}
+
 interface ReqChatgptHistory {
     username: string
     order_by_time : string
@@ -150,9 +155,14 @@ export const GetActiveUser = (): Res<null> =>
 export const DeleteHistoryApi = (data: ReqChatgptDelete): Res<null> =>
     instance.post(`/api/DeleteHistory`, data);
 
+export const DeleteWordApi = (data: WordDelete): Res<null> =>
+    instance.post(`/api/DeleteWord`, data);
+
 export const UpdateUserInfo = (data: UpdateUserInfo): Res<null> =>
     instance.post(`/api/UpdateUserInfo`, data);
 
+export const UpdateWord = (data: WordList): Res<null> =>
+    instance.post(`/api/UpdateWord`, data);
 //登出 api
 export const LogoutApi = (): Res<null> =>
     instance.get('/api/logout');

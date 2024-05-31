@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 import {GetUserInfoByPageNum} from "@/request/api";
-import { Delete,Search } from "@element-plus/icons-vue";
+import { Delete,Promotion,Search } from "@element-plus/icons-vue";
 import {useUserstore} from '@/store/user'
 import { ElMessage } from 'element-plus';
 import { GetHistoryApi } from "@/request/api";
@@ -106,14 +106,16 @@ const handleDelete = (index: number) => {
   <el-row>
     <el-col :span="24">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="userName" label="用户名" width="100"/>
         <el-table-column prop="original_text" label="原文本" width="500"/>
         <el-table-column prop="translated_text" label="翻译结果" width="500"/>
         <el-table-column prop="created_at" label="时间"/>
-        <el-table-column fixed="right" label="操作" width="60">
+        <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
-            <el-button @click="console.log(scope.row, scope.$index); handleDelete(scope.$index); deletehistory( scope.$index, scope.row )" link type="primary" size="large">
+            <el-button title="删除历史记录" @click="console.log(scope.row, scope.$index); handleDelete(scope.$index); deletehistory( scope.$index, scope.row )" link type="primary" size="large">
               <el-icon size="large"><Delete /></el-icon>
+            </el-button>
+            <el-button title="在主界面中打开" link type="primary" size="large">
+              <el-icon size="large"><Promotion /></el-icon>
             </el-button>
           </template>
         </el-table-column>

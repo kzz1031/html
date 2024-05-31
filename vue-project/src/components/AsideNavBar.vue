@@ -8,6 +8,7 @@ import {
   House,
   Star,
   HomeFilled,
+  Notebook,
   Memo,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
@@ -59,6 +60,11 @@ function jumptoUserInfo() {
   console.log("userinfo");
   router.push("/userinfo");
 }
+
+function jumptoSetPreferences() {
+  router.push('/set-preferences');
+}
+
 </script>
 
 <template>
@@ -84,19 +90,16 @@ function jumptoUserInfo() {
               ><el-icon><Memo /></el-icon>长文本</el-menu-item
             >
             <el-menu-item index="1-5" @click="jumptoWordlist()"
-              ><el-icon><Memo /></el-icon>单词本</el-menu-item
+              ><el-icon><Notebook /></el-icon>单词本</el-menu-item
             >
           </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Setting /></el-icon><el-text size="large">设置</el-text>
             </template>
-            <el-menu-item index="2-1" @click="jumptoUserInfo()"
-              >查看用户信息</el-menu-item
-            >
-            <el-menu-item index="2-2" @click="jumptoUser()"
-              >管理员</el-menu-item
-            >
+              <el-menu-item index="2-1" @click="jumptoUserInfo()">查看用户信息</el-menu-item>
+              <el-menu-item index="2-2" @click="jumptoUser()">管理员</el-menu-item>
+              <el-menu-item index="2-3" @click="jumptoSetPreferences()">页面偏好设置<el-icon><CircleCheck /></el-icon></el-menu-item>
           </el-sub-menu>
         </el-menu>
       </el-scrollbar>
@@ -140,4 +143,3 @@ function jumptoUserInfo() {
   transition: transform 0.3s ease; /* Ensure transition is smooth */
 }
 </style>
-

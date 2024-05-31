@@ -19,7 +19,7 @@ onMounted(() => {
   vantaEffect = BIRDS({
     el: vantaRef.value,
     THREE: THREE,
-    backgroundColor: 0xffffff
+    backgroundColor: 0x7d7df5
   });
 });
 
