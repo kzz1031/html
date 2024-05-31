@@ -12,6 +12,10 @@ import Main from "@/pages/Main.vue";
 import History from "@/pages/History.vue";
 import UserInfo from "@/pages/UserInfo.vue";
 import Collection from "@/pages/collection.vue";
+import Welcome from "@/pages/Welcome.vue";
+import Longtext from "@/pages/Longtext.vue"
+import Wordlist from "@/pages/Wordlist.vue";
+import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs";
 const routes =
     [
         {
@@ -43,6 +47,21 @@ const routes =
             path: '/userinfo',
             name: 'UserInfo',
             component: UserInfo,
+        },
+        {
+            path: '/welcome',
+            name: 'Welcome',
+            component: Welcome,
+        },
+        {
+            path: '/longtext',
+            name: 'Longtext',
+            component: Longtext,
+        },
+        {
+            path: '/wordlist',
+            name: 'Wordlist',
+            component: Wordlist
         },
         {
             path: '/index',

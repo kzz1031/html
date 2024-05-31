@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="lvalue" placeholder="请选择语言" style="width: 300px" @change="handleClick" id="language_selector">
+  <el-select v-model="lvalue" placeholder="请选择语言" style="width: 200px" @change="handleClick" id="language_selector">
     <el-option
         v-for="item in options"
         :key="item.value"

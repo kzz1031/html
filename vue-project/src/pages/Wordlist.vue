@@ -2,12 +2,9 @@
 <script setup lang="ts">
 import AsideNavBar from "@/components/AsideNavBar.vue";
 import Header from "@/components/Header.vue";
-import IndexHistory from "@/components/IndexHistory.vue";
-import { GetHistoryApi } from "@/request/api";
 import {onBeforeMount, ref} from "vue";
-import Wordbutton from "@/components/Wordbutton.vue"
 import {useUserstore} from '@/store/user'
-
+import Word from "@/components/Word.vue";
 const userStore=useUserstore()
 
 </script>
@@ -22,13 +19,12 @@ const userStore=useUserstore()
       </el-header>
         <el-container>
           <el-main>
-            <IndexHistory></IndexHistory>
+            <Word></Word>
           </el-main>
         </el-container>
     </el-container>
 
   </el-container>
-  <Wordbutton></Wordbutton>
 </template>
 
 <style scoped>

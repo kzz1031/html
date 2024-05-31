@@ -33,10 +33,20 @@ interface ReqChatgptDelete {
     time : string
 }
 
-interface ReqChatgptHistory {
+interface WordDelete {
     username: string
+    word : string
 }
 
+interface ReqChatgptHistory {
+    username: string
+    order_by_time : string
+    search_content: string
+}
+
+interface ReqChat{
+    username: string
+}
 interface ReqStatus {
     id: string
     navStatus: string
@@ -59,6 +69,7 @@ interface ItypeAPI<T> {
     user: User
     users: User[]
     histories: History[]
+    words : Word[]
     collections: Collection[]
     sum: Sum[]
     total_users: number
@@ -77,12 +88,29 @@ interface Sum{
     count: number
 }
 interface History {
-    username: string
-    original_text: string
-    translated_text: string
+    username: string,
+    original_text: string,
+    translated_text: string,
     created_at: string
   }
 
+interface WordList {
+    username : string,
+    word: string,
+    meaning : string,
+    prop : string,
+    rate : number 
+}
+interface Word {
+    word: string,
+    meaning : string,
+    prop : string,
+    rate : number,
+    created_at : string,
+    updated_at : string, 
+    username : string
+    
+}
 //测试hello api
 export const TestHello = (): Res<null> =>
     instance.get('/api/hello');
@@ -99,6 +127,9 @@ export const RegisterApi = (data: ReqRegister): Res<null> =>
 export const HistoryApi = (data: ReqChatgpt): Res<null> =>
     instance.post('/api/history', data);
 
+export const InsertWordApi = (data: WordList): Res<null> =>
+    instance.post('/api/insertword', data);
+
 export const CollectApi = (data: ReqChatgpt): Res<null> =>
     instance.post('/api/collect', data);
 
@@ -106,14 +137,16 @@ export const CollectApi = (data: ReqChatgpt): Res<null> =>
 export const GetHistoryApi = (data: ReqChatgptHistory): Res<null> =>
     instance.post(`/api/GetHistory`, data);
 
-
-export const GetCollectionApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetCollectionApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/GetCollection`, data);
 
-export const SuperUserApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetWordApi = (data: ReqChat): Res<null> =>
+    instance.post(`/api/GetWord`, data);
+
+export const SuperUserApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/SuperUser`, data);
 
-export const GetHistorySumApi = (data: ReqChatgptHistory): Res<null> =>
+export const GetHistorySumApi = (data: ReqChat): Res<null> =>
     instance.post(`/api/GetHistorySum`, data);
 
 export const GetActiveUser = (): Res<null> =>
@@ -122,9 +155,14 @@ export const GetActiveUser = (): Res<null> =>
 export const DeleteHistoryApi = (data: ReqChatgptDelete): Res<null> =>
     instance.post(`/api/DeleteHistory`, data);
 
+export const DeleteWordApi = (data: WordDelete): Res<null> =>
+    instance.post(`/api/DeleteWord`, data);
+
 export const UpdateUserInfo = (data: UpdateUserInfo): Res<null> =>
     instance.post(`/api/UpdateUserInfo`, data);
 
+export const UpdateWord = (data: WordList): Res<null> =>
+    instance.post(`/api/UpdateWord`, data);
 //登出 api
 export const LogoutApi = (): Res<null> =>
     instance.get('/api/logout');

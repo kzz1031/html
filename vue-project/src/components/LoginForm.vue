@@ -104,7 +104,7 @@ function jumpToRegister() {
 }
 
 .container {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.7);;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   width: 300px;   /* 根据需要调整宽度 */

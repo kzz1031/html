@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters for the BDG model
+beta_p = 0.1
+beta_n = 0.1
+b_p = 0.2
+b_n = 0.2
+n_p = 1
+n_n = 1
+t = 1  # time parameter
+
+# Define the characteristic function
+def phi_BDG(u):
+    term1 = 1 / (1 + beta_p * t * np.log(1 - 1j * u * b_p))
+    term2 = 1 / (1 + beta_n * t * np.log(1 + 1j * u * b_n))
+    return term1**n_p * term2**n_n
+
+# Values of u to evaluate
+u_values = np.linspace(-10, 10, 400)
+phi_values = phi_BDG(-1j*u_values)
+
+# Plot the real parts of the characteristic function
+plt.figure(figsize=(10, 6))
+plt.plot(u_values, (phi_values), label='Real Part')
+plt.title('Real Part of the BDG Characteristic Function')
+plt.xlabel('u')
+plt.ylabel('Real Part of $\phi^{(BDG)}_{X_t}(u)$')
+plt.legend()
+plt.grid(True)
+plt.show()

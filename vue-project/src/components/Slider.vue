@@ -1,10 +1,10 @@
 <template>
   <div class="slider-demo-block">
     <el-slider v-model="userStore.translate_style" show-stops :max="4" />
-    <div style="width: 100px;">
-      <el-text style="margin-left: 15px;">
+    <div style="width: 200px;">
+      <el-tag style="margin-left: 15px;">
       {{ currentValue }}
-      </el-text>
+      </el-tag>
     </div>
   </div>
 </template>
@@ -13,7 +13,6 @@
 import { ref, computed } from 'vue';
 import { useUserstore } from '@/store/user';
 const userStore = useUserstore();
-userStore.translate_style
 const value = ref(2);
 const options = ['口语', '较口语', '正常', '较正式', '正式'];
 
