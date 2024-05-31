@@ -8,7 +8,9 @@
       </el-icon>
     </el-button>
   </div>
-
+  <div class="slider-demo-block">
+    <el-slider v-model="value" show-input />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +18,8 @@ import router from '@/router';
 import TestComp from '@/components/Testcomp.vue'
 import Header from '@/components/Header.vue';
 import { Right } from '@element-plus/icons-vue';
+import { ref } from 'vue';
+const value = ref(0)
 function jumptoMain(){
   router.push('/');
 }
@@ -31,5 +35,14 @@ function jumptoMain(){
   position: absolute;
   bottom: 40px;
   right: 40px;
+}
+.slider-demo-block {
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+}
+.slider-demo-block .el-slider {
+  margin-top: 0;
+  margin-left: 12px;
 }
 </style>

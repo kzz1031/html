@@ -89,7 +89,7 @@ function jumptoSetPreferences() {
               ><el-icon><Memo /></el-icon>长文本</el-menu-item
             >
             <el-menu-item index="1-5" @click="jumptoWordlist()"
-              ><el-icon><Memo /></el-icon>单词本</el-menu-item
+              ><el-icon><Notebook /></el-icon>单词本</el-menu-item
             >
           </el-sub-menu>
           <el-sub-menu index="2">
@@ -142,4 +142,3 @@ function jumptoSetPreferences() {
   transition: transform 0.3s ease; /* Ensure transition is smooth */
 }
 </style>
-

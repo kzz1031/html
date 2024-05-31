@@ -3,7 +3,7 @@
     <el-tooltip
       class="box-item"
       effect="dark"
-      content="Top Left prompts info"
+      content="单词本"
       placement="top-start"
     >
       <button class="fixed-button" @click="showDialog = true">

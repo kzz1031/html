@@ -110,6 +110,8 @@ const sum_history = ref(0);
 const new_users = ref(0);
 const active_users = ref(0);
 const userStore = useUserstore();
+const vantaRef = ref(null);
+let vantaEffect: { destroy: () => void };
 
 onBeforeMount(async () => {
   let res = await GetHistorySumApi({

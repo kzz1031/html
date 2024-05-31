@@ -182,10 +182,6 @@ function copyTranslatedTextToClipboard() {
       ElMessage.error("复制翻译结果到剪贴板时发生错误");
     });
 }
-// 监听方向变化
-// watch(() => userStore.direction, (newVal) => {
-//   drawerDirection.value = newVal;
-// });
 </script>
 
 <template>
@@ -268,5 +264,13 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
   resize: none;
+}
+.translate_button:hover {
+  transform: scale(1.2); /* Scale up the item */
+  transition: transform 0.3s ease; /* Smooth transition */
+}
+
+.translate_button {
+  transition: transform 0.3s ease; /* Ensure transition is smooth */
 }
 </style>

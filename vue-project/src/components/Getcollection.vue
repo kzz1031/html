@@ -30,10 +30,10 @@ onBeforeMount(async () => {
       <el-col :span="24">
         <el-table :data="tableData" stripe style="width: 100%">
           <!-- 原文本列 -->
-          <el-table-column prop="original_text" label="原文本" class='original-column'/>
+          <el-table-column prop="original_text" label="原文本" class='original-column custom-column'/>
           
           <!-- 折叠面板列 -->
-          <el-table-column type="expand">
+          <el-table-column type="expand" class="custom-column">
             <template #default="{ row }">
               <!-- 展开的内容是翻译文本 -->
               <div style="padding: 10px; margin-bottom: 0px;" class="expand-column">
