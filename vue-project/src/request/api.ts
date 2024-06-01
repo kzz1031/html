@@ -53,9 +53,14 @@ interface ReqStatus {
 }
 
 interface Collection {
+    collection_id: number;
     original_text: string
     translated_text: string
   }
+
+interface DelCollection{
+    collection_id: number
+}
 // Res是返回的参数，T是泛型，需要自己定义，返回对数统一管理***
 type Res<T> = Promise<ItypeAPI<T>>;
 // 一般情况下响应数据返回的这三个参数，
@@ -157,6 +162,9 @@ export const DeleteHistoryApi = (data: ReqChatgptDelete): Res<null> =>
 
 export const DeleteWordApi = (data: WordDelete): Res<null> =>
     instance.post(`/api/DeleteWord`, data);
+
+export const DeleteCollectionApi = (data: DelCollection): Res<null> =>
+    instance.post(`/api/DeleteCollection`, data);
 
 export const UpdateUserInfo = (data: UpdateUserInfo): Res<null> =>
     instance.post(`/api/UpdateUserInfo`, data);

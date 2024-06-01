@@ -40,18 +40,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Notebook } from "@element-plus/icons-vue";
 import { InsertWordApi } from "@/request/api";
 import { useUserstore } from "@/store/user";
 import { ElMessage } from "element-plus";
 import useStore from "element-plus/es/components/table/src/store/index.mjs";
-import type { RefSymbol } from "@vue/reactivity";
+import emitter from "@/Mitt";
+
 const showDialog = ref(false);
 const word = ref("");
 const meaning = ref("");
 const partOfSpeech = ref("");
 const rate = ref(0);
+
+onMounted(() => {
+  console.log('word component mounted and listener set');
+  emitter.on('addingword', (message) => {
+    showDialog.value = true;
+    word.value = message.word;
+    partOfSpeech.value = message.pos;
+    meaning.value = message.translation;
+    console.log(message.word, message.pos, message.translation);
+  });
+});
 
 function saveWord() {
   // 在这里处理保存单词的逻辑，例如发送到服务器或保存到本地

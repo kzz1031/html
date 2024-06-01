@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import {Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck} from '@element-plus/icons-vue'
+import { onBeforeMount, ref, watch } from 'vue'
+import {Minus, Plus, Refresh, Edit, Delete, Share, CopyDocument, Star, CircleCheck} from '@element-plus/icons-vue'
 import Selector from './Selector.vue'
 import { ElMessage,  ElMessageBox } from 'element-plus';
 import {useUserstore} from '@/store/user'
@@ -11,6 +11,7 @@ import PreferenceScroll from './PreferenceScroll.vue'
 const userStore = useUserstore();
 const inputText = ref("");
 const translatedText = ref("");
+
 const fontSize = ref(16); // 初始字体大小
 const language = ref("中文翻译到英文");
 const loading = ref(false);
@@ -28,7 +29,20 @@ const handleClick = () => {
   console.log("handleclick");
   emit("translate_sum");
 };
+watch(() => userStore.originalText, (newText) => {
+  inputText.value = newText;
+});
 
+watch(() => userStore.translatedText, (newText) => {
+  translatedText.value = newText;
+});
+
+onBeforeMount(async () => {
+  inputText.value = userStore.originalText;
+  translatedText.value = userStore.translatedText;
+  userStore.originalText = "";
+  userStore.translatedText = "";
+})
 
 function splitTextIntoSentences(text: string): string[] {
   return text
@@ -214,7 +228,7 @@ function copyTranslatedTextToClipboard() {
   <div class="container_foot">
     <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
     <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
-    <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
+    <el-button type="primary" :icon="CopyDocument" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
     <el-button type="primary" :icon="Delete"  @click="clearInputText" title="清空文本框"/>
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
     <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好" @click="setPreference">翻译偏好</el-button>
@@ -224,15 +238,14 @@ function copyTranslatedTextToClipboard() {
     :direction="drawerDirection"
     title="字词翻译偏好">
     <template #title>
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 5px; margin-bottom: 0px;">
           <span>字词翻译偏好</span>
           <el-button type="primary" :icon="CircleCheck" @click="setPreference">保存字词翻译偏好</el-button>
         </div>
-      </template>
+    </template>
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
-    
   </div>
 </template>
 

@@ -84,8 +84,13 @@ const fetchData = async () => {
   
 };
 
+const handlePromotion = (row: History) => {
+  userStore.originalText = row.original_text; 
+  userStore.translatedText = row.translated_text;
+  console.log(userStore.originalText,userStore.translatedText);
+  router.push('/');
+};
 const handleDelete = (index: number) => {
-  // 删除指定索引的行
   console.log(index);
   tableData.value.splice(index, 1);
 };
@@ -106,16 +111,16 @@ const handleDelete = (index: number) => {
   <el-row>
     <el-col :span="24">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="original_text" label="原文本" width="500"/>
-        <el-table-column prop="translated_text" label="翻译结果" width="500"/>
+        <el-table-column prop="original_text" label="原文本" width="480"/>
+        <el-table-column prop="translated_text" label="翻译结果" width="480"/>
         <el-table-column prop="created_at" label="时间"/>
         <el-table-column fixed="right" label="操作" width="120">
           <template #default="scope">
             <el-button title="删除历史记录" @click="console.log(scope.row, scope.$index); handleDelete(scope.$index); deletehistory( scope.$index, scope.row )" link type="primary" size="large">
               <el-icon size="large"><Delete /></el-icon>
             </el-button>
-            <el-button title="在主界面中打开" link type="primary" size="large">
-              <el-icon size="large"><Promotion /></el-icon>
+            <el-button title="在主界面中打开" link type="primary" size="large" @click="handlePromotion(scope.row)">
+              <el-icon size="large" ><Promotion /></el-icon>
             </el-button>
           </template>
         </el-table-column>

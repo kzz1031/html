@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, computed } from "vue";
+import { onBeforeMount, ref, computed, onMounted, onUnmounted } from "vue";
 import { GetWordApi } from "@/request/api";
 import { useUserstore } from "@/store/user";
 import { ElMessage } from "element-plus";
@@ -7,7 +7,7 @@ import { Search, Delete, View } from "@element-plus/icons-vue";
 import { DeleteWordApi } from "@/request/api";
 import { UpdateWord } from "@/request/api";
 import router from "@/router";
-
+import emitter from "@/Mitt";
 interface Word {
   word: string;
   meaning: string;
@@ -25,6 +25,8 @@ const currentWord = ref<Word>({
 const tableData = ref<Word[]>([]);
 const userStore = useUserstore();
 const searchQuery = ref("");
+const sort_time = ref(0);
+const sort_rate = ref(0);
 const wordDialogVisible = ref(false);
 
 onBeforeMount(async () => {
@@ -45,14 +47,11 @@ onBeforeMount(async () => {
 });
 
 const showWordDialog = (word: Word) => {
-  // 显示单词信息对话框，并将当前单词信息赋值给currentWord
   wordDialogVisible.value = true;
   currentWord.value = { ...word };
 };
 
 const updateWord = async (currentWord:Word) => {
-  // 发送更新单词信息的请求，这里需要根据实际情况调用API
-  // 更新成功后关闭对话框
   const Word = {
     word: currentWord.word,
     prop: currentWord.prop,
@@ -82,14 +81,38 @@ const filteredWords = computed(() => {
 });
 
 const sortByTime = () => {
-  tableData.value.sort(
-    (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  if(sort_time.value == 0){
+      tableData.value.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+    sort_time.value += 1;
+    sort_time.value %= 2;
+  }
+  else 
+  {
+    sort_time.value += 1;
+    sort_time.value %= 2;
+    tableData.value.sort(
+      (a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+  }
+  
 };
 
 const sortByRate = () => {
-  tableData.value.sort((a, b) => b.rate - a.rate);
+  if(sort_rate.value == 0){
+    tableData.value.sort((a, b) => b.rate - a.rate);
+    sort_rate.value += 1;
+    sort_rate.value %= 2;
+  }
+  else{
+    tableData.value.sort((a, b) => a.rate - b.rate);
+    sort_rate.value += 1;
+    sort_rate.value %= 2;
+  }
+ 
 };
 
 const handleDelete = async (index: number, row: any) => {

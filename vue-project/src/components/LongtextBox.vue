@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck, Opportunity } from '@element-plus/icons-vue';
+import { computed, ref, defineComponent, onMounted  } from 'vue';
+import { Minus, Plus, CopyDocument, Refresh, Edit, Delete, Share, Star, CircleCheck, Opportunity } from '@element-plus/icons-vue';
 import Selector from './Selector.vue';
 import { ElMessage } from 'element-plus';
 import { useUserstore } from '@/store/user';
 import { HistoryApi, CollectApi } from "@/request/api";
 import Slider from './Slider.vue';
+import emitter from '@/Mitt';
 
 const userStore = useUserstore();
 const inputText = ref('');
@@ -50,6 +51,11 @@ const translatedSentences = ref<string[]>([]);
 
 const emit = defineEmits(['translate_sum']);
 const handleClick = () => {
+  gridData.value.push({
+      word: 'test',
+      pos: 'test',
+      translation: 'test'
+    });
   userStore.search_sum += 1;
   console.log("handleclick");
   emit('translate_sum');
@@ -273,6 +279,18 @@ function copyTranslatedTextToClipboard() {
   });
 }
 
+
+const addtoWordlist = (row: Word) => {
+ // Emitting an event with the name 'sayHello'
+ console.log('adding')
+ emitter.emit("addingword", {
+    word: row.word,
+    pos: row.pos,
+    translation: row.translation
+  });
+  table.value = false;
+
+};
 </script>
 
 <template>
@@ -287,15 +305,15 @@ function copyTranslatedTextToClipboard() {
   </div>
   <div style="margin-top: 10px; display: flex;">
     <el-tag size="large" >当前字数： {{ inputText.length }}</el-tag>
-    <div class="demo-progress" style="margin-left: 10px; margin-top: 3px;">
-      <el-progress :percentage="percentage" :color="customColors" :stroke-width="15" striped/>
+    <div class="demo-progress" style="margin-left: 10px; margin-top: 3px; margin-right: 10px;">
+      <el-progress :text-inside="true" :percentage="percentage" :color="customColors" :stroke-width="15" striped/>
     </div>
     <el-tag>当前翻译进度</el-tag>
   </div>
   <div class="container_foot">
     <el-button class="font_size_button" @click="decreaseFontSize"><el-icon><Minus /></el-icon></el-button>
     <el-button class="font_size_button" @click="increaseFontSize"><el-icon><Plus /></el-icon></el-button>
-    <el-button type="primary" :icon="Share" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
+    <el-button type="primary" :icon="CopyDocument" @click="copyTranslatedTextToClipboard" title="复制翻译结果"/>
     <el-button type="primary" :icon="Delete"  @click="clearInputText" title="清空文本框"/>
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
     <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好">个人偏好</el-button>
@@ -318,11 +336,11 @@ function copyTranslatedTextToClipboard() {
             v-model="searchQuery"
             placeholder="搜索单词"
             clearable
-            style="width: 100px;"
+            style="width: 150px;"
           />
         </template>
         <template #default="scope">
-          <el-button size="small" label="加入单词本">
+          <el-button size="small" label="加入单词本" @click="addtoWordlist(scope.row)">
             <el-icon><Plus /></el-icon>
           </el-button>
         </template>
