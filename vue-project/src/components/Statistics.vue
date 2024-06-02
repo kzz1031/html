@@ -65,7 +65,7 @@
       </el-col>
       <el-col :span="8">
         <div class="statistic-card">
-          <el-statistic :value="72000" title="New transactions today">
+          <el-statistic :value="userStore.tokens" title="New transactions today">
             <template #title>
               <div style="display: inline-flex; align-items: center">
                 用户剩余TOKEN
@@ -124,6 +124,7 @@ onBeforeMount(async () => {
   console.log("getactiveuser");
   const res2 = await GetActiveUser();
   active_users.value = res2.total_users;
+  userStore.tokens = 72000;
 });
 
 

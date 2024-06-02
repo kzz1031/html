@@ -12,7 +12,8 @@ export const useUserstore = defineStore("user", {
       isDrawerOpen: false,
       originalText: "",
       translatedText: "",
-      addingtoWordlist : false
+      addingtoWordlist : false,
+      tokens: 0
     };
   },
   actions: {

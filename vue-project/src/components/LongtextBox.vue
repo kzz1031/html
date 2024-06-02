@@ -46,9 +46,6 @@ const handleValueChange = (value: string) => {
   console.log(language.value);
 };
 
-const inputSentences = ref<string[]>([]);
-const translatedSentences = ref<string[]>([]);
-
 const emit = defineEmits(['translate_sum']);
 const handleClick = () => {
   gridData.value.push({
@@ -291,6 +288,33 @@ const addtoWordlist = (row: Word) => {
   table.value = false;
 
 };
+
+function splitTextIntoSentences(text: string): string[] {
+  return text.match(/[^.!?。\！？…]+[.!?。\！？…]+/g) || [];
+}
+
+const highlightedIndex = ref<number | null>(null);
+const dialogVisible = ref(false);
+
+function highlightTranslation(index: number) {
+  highlightedIndex.value = index;
+}
+
+function removeHighlight() {
+  highlightedIndex.value = null;
+}
+const originalSentences = ref<string[]>([]);
+const translatedSentences = ref<string[]>([]);
+
+function compareText() {
+  dialogVisible.value = true;
+  console.log(inputText.value);
+  const Sentences1 = splitTextIntoSentences(inputText.value);
+  const Sentences2 = splitTextIntoSentences(translatedText.value);
+  originalSentences.value = Sentences1;
+  translatedSentences.value = Sentences2;
+  console.log(originalSentences);
+}
 </script>
 
 <template>
@@ -318,7 +342,42 @@ const addtoWordlist = (row: Word) => {
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
     <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好">个人偏好</el-button>
     <el-button type="primary" :icon="Opportunity"  title="打开学习面板" @click="table = true">学习者</el-button>
+    <el-button type="primary" :icon="Opportunity"  title="文本比对" @click="compareText" >文本比对</el-button>
   </div>
+  <el-dialog
+      title="原文与译文"
+      v-model="dialogVisible"
+      width="60%"
+      center
+    >
+      <div class="text-container">
+        <div class="original-text">
+          <template v-for="(sentence, index) in originalSentences" :key="index">
+            <span
+              class="highlightable-span"
+              @mouseover="highlightTranslation(index)"
+              @mouseleave="removeHighlight"
+              :class="{ highlighted: index === highlightedIndex }"
+            >
+              {{ sentence }}
+            </span>
+          </template>
+        </div>
+        <div class="translated-text">
+          <template v-for="(sentence, index) in translatedSentences" :key="index">
+            <span
+              class="highlightable-span"
+              :class="{ highlighted: index === highlightedIndex }"
+            >
+              {{ sentence }}
+            </span>
+          </template>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
   <el-drawer
     v-model="table"
     title="学习面板"
@@ -392,5 +451,29 @@ textarea {
 
 .translate_button {
   transition: transform 0.3s ease; /* Ensure transition is smooth */
+}
+
+.text-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.original-text, .translated-text {
+  width: 45%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.highlightable-span{
+  display: inline-block;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.highlighted {
+  background-color: yellow;
 }
 </style>
