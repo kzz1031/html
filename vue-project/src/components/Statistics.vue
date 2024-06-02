@@ -23,7 +23,7 @@
             <div class="footer-item">
               <span>超过用户数：</span>
               <span class="green">
-                24%
+                {{userStore.surpass}}
                 <el-icon>
                   <CaretTop />
                 </el-icon>
@@ -49,7 +49,7 @@
                 </el-tooltip>
               </div>
             </template>
-          </el-statistic>
+          </el-statistic><!--
           <div class="statistic-footer">
             <div class="footer-item">
               <span>日增用户</span>
@@ -60,7 +60,7 @@
                 </el-icon>
               </span>
             </div>
-          </div>
+          </div>-->
         </div>
       </el-col>
       <el-col :span="8">
@@ -69,9 +69,18 @@
             <template #title>
               <div style="display: inline-flex; align-items: center">
                 用户剩余TOKEN
+                <el-tooltip
+                  effect="dark"
+                  content="每翻译一个字符消耗 1 token"
+                  placement="top"
+                >
+                  <el-icon style="margin-left: 4px" :size="12">
+                    <Warning />
+                  </el-icon>
+                </el-tooltip>
               </div>
             </template>
-          </el-statistic>
+          </el-statistic><!--
           <div class="statistic-footer">
             <div class="footer-item">
               <span>than yesterday</span>
@@ -87,7 +96,7 @@
                 <ArrowRight />
               </el-icon>
             </div>
-          </div>
+          </div>-->
         </div>
       </el-col>
     </el-row>
@@ -121,10 +130,12 @@ onBeforeMount(async () => {
     sum_history.value = item.count;
   });
   userStore.search_sum = sum_history.value;
+  userStore.surpass = res.surpass;
+  userStore.tokens = res.Token;
   console.log("getactiveuser");
   const res2 = await GetActiveUser();
   active_users.value = res2.total_users;
-  userStore.tokens = 72000;
+  
 });
 
 

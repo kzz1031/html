@@ -45,7 +45,7 @@ function jumptoLogin() {
         >
           GPT-TRANSLATOR
         </el-link>
-        <el-link href="/Test">TEST</el-link>
+        <!--<el-link href="/Test">TEST</el-link>-->
       </div>
       <div class="toolbar">
         <el-dropdown>

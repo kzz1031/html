@@ -8,12 +8,13 @@ export const useUserstore = defineStore("user", {
       is_superuser: false,
       search_sum: 0,
       translate_style: 2,
-      direction: "btt" as Direction, // 使用类型断言确保初始值符合定义的类型// 默认方向为 left to right
+      direction: "btt" as Direction, 
       isDrawerOpen: false,
       originalText: "",
       translatedText: "",
       addingtoWordlist : false,
-      tokens: 0
+      tokens: 0,
+      surpass: 0
     };
   },
   actions: {

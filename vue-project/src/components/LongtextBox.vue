@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, defineComponent, onMounted  } from 'vue';
-import { Minus, Plus, CopyDocument, Refresh, Edit, Delete, Share, Star, CircleCheck, Opportunity } from '@element-plus/icons-vue';
+import { Minus, Plus, CopyDocument, Refresh, Edit, Delete, Share, Star, CircleCheck, Opportunity,Reading } from '@element-plus/icons-vue';
 import Selector from './Selector.vue';
 import { ElMessage } from 'element-plus';
 import { useUserstore } from '@/store/user';
 import { HistoryApi, CollectApi } from "@/request/api";
+import * as sbd from 'sbd';
+
 import Slider from './Slider.vue';
 import emitter from '@/Mitt';
 
@@ -291,6 +293,15 @@ const addtoWordlist = (row: Word) => {
 
 function splitTextIntoSentences(text: string): string[] {
   return text.match(/[^.!?。\！？…]+[.!?。\！？…]+/g) || [];
+/*
+   const options = {
+    newline_boundaries: true, // 换行符是否被视为断句标志
+    html_boundaries: true, // HTML标签是否被视为断句标志
+    sanitize: false, // 是否清理文本中的HTML标签
+    allowed_tags: false // 允许的HTML标签（如果sanitize为true）
+  };
+
+  return sbd.sentences(text, options);*/
 }
 
 const highlightedIndex = ref<number | null>(null);
@@ -342,13 +353,14 @@ function compareText() {
     <el-button type="primary" :icon="Star" @click="collect" title="收藏"/>
     <el-button type="primary" :icon="CircleCheck"  title="设置个人偏好">个人偏好</el-button>
     <el-button type="primary" :icon="Opportunity"  title="打开学习面板" @click="table = true">学习者</el-button>
-    <el-button type="primary" :icon="Opportunity"  title="文本比对" @click="compareText" >文本比对</el-button>
+    <el-button type="primary" :icon="Reading"  title="文本比对" @click="compareText" >文本比对</el-button>
   </div>
   <el-dialog
       title="原文与译文"
       v-model="dialogVisible"
       width="60%"
       center
+      draggable="true"
     >
       <div class="text-container">
         <div class="original-text">

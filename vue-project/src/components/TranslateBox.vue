@@ -26,6 +26,7 @@ const translatedSentences = ref<string[]>([]);
 const emit = defineEmits(["translate_sum"]);
 const handleClick = () => {
   userStore.search_sum += 1;
+  userStore.tokens -= inputText.value.length;
   console.log("handleclick");
   emit("translate_sum");
 };
@@ -55,6 +56,10 @@ const drawer = ref(false);
 const drawerDirection = ref(userStore.direction);
 
 async function translateText() {
+  if(inputText.value.length > 2000) {
+    ElMessage.info('翻译文本过长，请使用长文本模式')
+    return;
+  }
   const apiKey = "sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9"; // 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
   console.log("translateText() 函数被调用了！");
@@ -92,8 +97,11 @@ async function translateText() {
     const data = await response.json();
     translatedText.value = data.choices[0].message.content; // 获取助手的回复内容
 
-    if(!(userStore.userName === '请登录'))  await storeTranslationHistory(inputText.value, translatedText.value);
-      else console.log(userStore.userName);
+    if(!(userStore.userName === '请登录')) {
+      await storeTranslationHistory(inputText.value, translatedText.value);
+      handleClick();
+    } 
+    else console.log(userStore.userName);
 
   } catch (error) {
     console.error('There was a problem with the fetch operation:', error);

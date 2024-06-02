@@ -7,7 +7,7 @@ import { Search, Delete, View } from "@element-plus/icons-vue";
 import { DeleteWordApi } from "@/request/api";
 import { UpdateWord } from "@/request/api";
 import router from "@/router";
-import emitter from "@/Mitt";
+
 interface Word {
   word: string;
   meaning: string;
@@ -158,19 +158,7 @@ const handleDelete = async (index: number, row: any) => {
         <el-rate v-model="scope.row.rate" disabled></el-rate>
       </template>
     </el-table-column>
-    <el-table-column label="操作" width="60" align="right">
-      <template #default="scope">
-        <el-button
-          @click="handleDelete(scope.$index, scope.row)"
-          link
-          type="primary"
-          size="large"
-        >
-          <el-icon size="large"><Delete /></el-icon>
-        </el-button>
-      </template>
-    </el-table-column>
-    <el-table-column label="详情" width="60" align="right">
+    <el-table-column label="详情">
       <template #default="scope">
         <el-button
           @click="showWordDialog(scope.row)"
@@ -179,6 +167,18 @@ const handleDelete = async (index: number, row: any) => {
           size="large"
         >
           <el-icon size="large"><View /></el-icon>
+        </el-button>
+      </template>
+    </el-table-column>
+    <el-table-column label="操作" align="right">
+      <template #default="scope">
+        <el-button
+          @click="handleDelete(scope.$index, scope.row)"
+          link
+          type="primary"
+          size="large"
+        >
+          <el-icon size="large"><Delete /></el-icon>
         </el-button>
       </template>
     </el-table-column>

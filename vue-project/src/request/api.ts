@@ -77,8 +77,10 @@ interface ItypeAPI<T> {
     words : Word[]
     collections: Collection[]
     sum: Sum[]
+    surpass: number
     total_users: number
     total_pages: number
+    Token: number
 }
 
 interface User {
