@@ -130,7 +130,7 @@ async function translateText() {
     loading.value = false;
     ElMessage.error("输入文本为空");
   } else try {
-    const textParts = splitText(inputText.value, 2000);
+    const textParts = splitText(inputText.value, 500);
     const message = [
       {
         role: 'system',
@@ -145,6 +145,9 @@ async function translateText() {
     parts_count.value = textParts.length;
     percentage.value = process.value / parts_count.value * 100;
     for (const part of textParts) {
+      if (message.length > 4) {
+      message.splice(2, 2);
+    }
       message.push({
         role: 'user',
         content: part

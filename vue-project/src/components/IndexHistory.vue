@@ -98,7 +98,7 @@ const handleDelete = (index: number) => {
 
 <template>
   <div class="center-container">
-    <el-input v-model="input1" style="width: 500px" size="large" placeholder="Please Input">
+    <el-input v-model="input1" style="width: 500px" size="large" placeholder="请输入">
       <template #append>
         <el-button :icon="Search" @click="handleCurrentChange"/>
       </template>
