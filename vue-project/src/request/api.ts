@@ -74,6 +74,12 @@ interface ItypeAPI<T> {
     sum: Sum[]
     total_users: number
     total_pages: number
+    Token: number
+    action?: string
+    wish: string[]
+    translation: string[]
+    pretranslations: Translation[]
+    pretranslation: FetchTranslation[]
 }
 
 interface User {
@@ -110,6 +116,40 @@ interface Word {
     updated_at : string, 
     username : string
     
+}
+interface ReqAddTranslation {
+    username: string,
+    wish: string[],
+    translation: string[]
+}
+
+interface FetchTranslation {
+    username: string
+    wish: string[],
+    translation: string[],
+    created_at: string[],
+    updated_at: string[],
+}
+
+interface Translation {
+    updated_at: string,
+    username: string
+    wish: string,
+    translation: string,
+    created_at: string,
+}
+interface UpdateTranslation {
+    updated_at: string,
+    username: string
+    wish: string,
+    raw_wish: string,
+    translation: string,
+    raw_created_at: string,
+}
+interface ReqChatgptPretranslation {
+    username: string
+    order_by_time : string
+    search_content: string
 }
 //测试hello api
 export const TestHello = (): Res<null> =>
@@ -163,6 +203,14 @@ export const UpdateUserInfo = (data: UpdateUserInfo): Res<null> =>
 
 export const UpdateWord = (data: WordList): Res<null> =>
     instance.post(`/api/UpdateWord`, data);
+//////////////对偏好表操作
+export const GetPretranslationApi = (data: ReqChatgptPretranslation): Res<null> =>
+    instance.post(`/api/GetPretranslation`, data);
+export const DeletePretranslationApi = (data: ReqChatgptDelete): Res<null> =>
+    instance.post(`/api/DeletePretranslation`, data);
+export const UpdatePretranslation = (data: UpdateTranslation): Res<null> =>
+    instance.post(`/api/UpdatePretranslation`, data);
+
 //登出 api
 export const LogoutApi = (): Res<null> =>
     instance.get('/api/logout');
@@ -175,6 +223,13 @@ export const GetUserInfoByUserName = (params: { userName: string }): Res<null> =
 export const GetUserInfoByPageNum = (params: { pageNumber: number }): Res<null> =>
     instance.get(`/api/users/list/${params.pageNumber}`, {params});
 
+//提交翻译偏好
+export const AdmitwishApi = (data: ReqAddTranslation): Res<null> => 
+    instance.post('/api/submit_Translations', data);
+
+//从后端把偏好仓库数据拉回来
+export const FetchtranslationsApi = (data: FetchTranslation): Res<null> => 
+    instance.post('/api/Fetch_Translations', data);
 
 //以下是模板:
 // post请求 ，没参数

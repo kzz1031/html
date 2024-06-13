@@ -10,6 +10,9 @@ import {
   HomeFilled,
   Notebook,
   Memo,
+  Management,
+  Avatar,
+  MessageBox,
 } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 import { useUserstore } from "@/store/user";
@@ -28,6 +31,10 @@ function change(key: string, keyPath: string[]) {
 function jumptoHistory() {
   if (userStore.userName === "请登录") ElMessage("用户未登录");
   else router.push("/history");
+}
+function jumptoPretranslation() {
+  if (userStore.userName === "请登录") ElMessage("用户未登录");
+  else router.push("/pretranslation");
 }
 
 function jumptoMain() {
@@ -82,6 +89,9 @@ function jumptoSetPreferences() {
             >
             <el-menu-item index="1-2" @click="jumptoHistory()"
               ><el-icon><Search /></el-icon>历史记录查询</el-menu-item
+            >
+            <el-menu-item index="1-2" @click="jumptoPretranslation()"
+              ><el-icon><MessageBox /></el-icon>偏好查询</el-menu-item
             >
             <el-menu-item index="1-3" @click="jumptoCollection()"
               ><el-icon><Star /></el-icon>收藏</el-menu-item

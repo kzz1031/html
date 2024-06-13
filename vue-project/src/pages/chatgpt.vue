@@ -3,14 +3,17 @@
 import { ref } from 'vue';
 import {Plus, Minus} from "@element-plus/icons-vue";
 
+
 const inputText = ref('');
 const translatedText = ref('');
+
 
 async function translateText() {
   const apiKey = 'sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9';// 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
   console.log("translateText() 函数被调用了！");
   try {
+    // const referenceContext = await fetchTranslations();
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -22,7 +25,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: '请将下面这段话直接翻译成英文(直接把英文给我):' + inputText.value
+            content: '请将下面这段话直接翻译成英文(直接把英文给我):' + inputText.value + ' (辅助参考：' + referenceContext + ')'
           }
         ]
       })

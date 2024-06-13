@@ -7,10 +7,22 @@ import {useUserstore} from '@/store/user'
 import {HistoryApi,CollectApi} from "@/request/api";
 import Slider from './Slider.vue'
 import PreferenceScroll from './PreferenceScroll.vue'
+import { FetchtranslationsApi } from "@/request/api";
+import emitter from '@/Mitt';
+import { onMounted, onUnmounted, computed } from 'vue';
+
 
 const userStore = useUserstore();
 const inputText = ref("");
 const translatedText = ref("");
+const referenceContext = ref("");
+const valueToPasswish = ref('');
+
+interface preferwish {
+  wish: string;
+}
+const gridData = ref<preferwish[]>([]);
+
 const fontSize = ref(16); // 初始字体大小
 const language = ref("中文翻译到英文");
 const loading = ref(false);
@@ -22,13 +34,72 @@ const handleValueChange = (value: string) => {
 const inputSentences = ref<string[]>([]);
 const translatedSentences = ref<string[]>([]);
 
-const emit = defineEmits(["translate_sum"]);
+const emit = defineEmits(["translate_sum", 'prewish']);
 const handleClick = () => {
   userStore.search_sum += 1;
   console.log("handleclick");
   emit("translate_sum");
 };
+const handlerightClick = () => {
+  gridData.value.push({
+      wish: 'test',
+    });
+  console.log('addingrightclick');
+  emit("prewish");
+};
 
+
+watch(() => userStore.originalText, (newText) => {
+  inputText.value = newText;
+});
+
+watch(() => userStore.translatedText, (newText) => {
+  translatedText.value = newText;
+});
+
+
+async function fetchTranslations(username: string, wishes: string[], translations: string[], created_at: string[], updated_at: string[],) {
+  console.log('fetching')
+  const preferData = {
+      username: userStore.userName, // 用户名
+      wish: wishes,
+      translation: translations,
+      created_at: created_at,
+      updated_at: updated_at
+    };
+    // 使用 HistoryApi 存储历史记录
+    const response = await FetchtranslationsApi(preferData);
+    
+    console.log(preferData);
+    // if (!response.success || !response.wish || !response.translation) {
+    //     console.error('Failed to fetch translations:', response.message);
+    //     return '';
+    // }
+
+    // if (response.wish.length !== response.translation.length) {
+    //     console.error('Wishes and translations count do not match');
+    //     return '';
+    // }
+// `我希望${response.wish[index]} 翻译成 ${response.translation[index]}。 `
+    let contextString = "";
+    response.pretranslation.forEach((item) => {
+        if (item.wish && item.translation) { // 确保 wish 和 translation 数据存在
+            contextString += `我希望 ${item.wish} 翻译成 ${item.translation}。 `;
+    } else {
+        console.log(`Missing data wish or translation is undefined.`);
+    }
+  });
+  console.log(contextString)
+    return contextString;
+}
+
+onBeforeMount(async () => {
+  //const response = await FetchtranslationsApi(preferData);
+  inputText.value = userStore.originalText;
+  translatedText.value = userStore.translatedText;
+  userStore.originalText = "";
+  userStore.translatedText = "";
+})
 
 function splitTextIntoSentences(text: string): string[] {
   return text
@@ -43,8 +114,11 @@ const drawerDirection = ref(userStore.direction);
 async function translateText() {
   const apiKey = "sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9"; // 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
+  const data = await fetchTranslations(userStore.userName, userStore.wishes, userStore.translations, userStore.created_at, userStore.updated_at);
+  referenceContext.value = data;
   console.log("translateText() 函数被调用了！");
   console.log(userStore.translate_style);
+  console.log(referenceContext.value);
   if (userStore.translate_style == 0) style.value = "(用口语化的语言)";
   else if (userStore.translate_style == 1) style.value = "(用较口语化的语言)";
   else if (userStore.translate_style == 2) style.value = "";
@@ -67,7 +141,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: '请将下面这段话从' + language.value + style.value + '(直接把译文给我):' + inputText.value
+            content: ' (一定要把我希望翻译的内容替换成我想要的翻译：):' + referenceContext.value + '请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
           }
         ]
       })
@@ -75,6 +149,7 @@ async function translateText() {
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+    console.log(referenceContext);
     const data = await response.json();
     translatedText.value = data.choices[0].message.content; // 获取助手的回复内容
 
@@ -182,6 +257,34 @@ function copyTranslatedTextToClipboard() {
       ElMessage.error("复制翻译结果到剪贴板时发生错误");
     });
 }
+
+function handleRightClick(event: MouseEvent, data: string) {
+  event.preventDefault();  // 例如，阻止默认的右键菜单
+  gridData.value.splice(0, gridData.value.length);
+  const selectedText = window.getSelection()?.toString().trim();
+  if (!selectedText) {
+    ElMessage.info("没有选中任何文本");
+    return;
+  }
+
+  ElMessageBox.confirm(`是否将选中的文本 "${selectedText}" 添加到翻译偏好?`, '添加到翻译偏好', {
+    confirmButtonText: '是的',
+    cancelButtonText: '取消',
+    type: 'info'
+  }).then(() => {
+    userStore.setNewWish(selectedText);
+    gridData.value.push({
+      wish: selectedText,
+    });
+    emitter.emit("prewish", {
+      wish: selectedText,
+    });
+    console.log(gridData.value);
+    ElMessage.success("文本已添加到翻译偏好");
+  }).catch(() => {
+    ElMessage.info("操作已取消");
+  });
+}
 </script>
 
 <template>
@@ -195,7 +298,9 @@ function copyTranslatedTextToClipboard() {
       v-model="inputText"
       :style="{ fontSize: fontSize + 'px', opacity: 0.8}"
       placeholder="输入要翻译的文本"
-    ></textarea>
+      @contextmenu.prevent="handleRightClick"
+    >
+    </textarea>
     <el-button
       type="primary"
       class="translate_button"
@@ -222,13 +327,7 @@ function copyTranslatedTextToClipboard() {
     v-model="drawer"
     :before-close="beforeCloseDrawer"
     :direction="drawerDirection"
-    title="字词翻译偏好">
-    <template #title>
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-          <span>字词翻译偏好</span>
-          <el-button type="primary" :icon="CircleCheck" @click="setPreference">保存字词翻译偏好</el-button>
-        </div>
-      </template>
+    >
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
