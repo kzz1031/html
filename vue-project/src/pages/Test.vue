@@ -8,9 +8,7 @@
       </el-icon>
     </el-button>
   </div>
-  <div class="slider-demo-block">
-    <el-slider v-model="value" show-input />
-  </div>
+
 </template>
 
 <script lang="ts" setup>

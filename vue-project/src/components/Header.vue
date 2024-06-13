@@ -19,7 +19,6 @@ async function logout() {
     ElMessage.success("登出成功");
     userStore.userName = "请登录";
     console.log(userStore.userName);
-    await router.push("/");
   } else {
     ElMessage("登出失败");
   }

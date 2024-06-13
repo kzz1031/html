@@ -31,6 +31,7 @@
 <script>
 import axios from 'axios';
 import {ElMessage} from 'element-plus'
+import { useUserstore } from '@/store/user';
 export default {
   data() {
     return {
@@ -141,7 +142,8 @@ export default {
             });
             ElMessage.success('注册成功')
             console.log('注册成功', response.data);
-            this.$router.push('/login');
+            useUserstore().userName = this.username;
+            this.$router.push('/welcome');
           } catch (error) {
             ElMessage.error('注册失败，请检查输入'); // 添加错误提示
             console.error('注册失败', error.response.data);

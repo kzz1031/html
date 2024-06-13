@@ -222,7 +222,6 @@ async function storeTranslationHistory(originalText: string, translatedText: str
       translated_text: translatedText // 翻译后的文本
     };
 
-    // 使用 HistoryApi 存储历史记录
     const response = await HistoryApi(historyData);
 
     if (response.success) {
@@ -283,7 +282,6 @@ function copyTranslatedTextToClipboard() {
 
 
 const addtoWordlist = (row: Word) => {
- // Emitting an event with the name 'sayHello'
  console.log('adding')
  emitter.emit("addingword", {
     word: row.word,
@@ -291,7 +289,6 @@ const addtoWordlist = (row: Word) => {
     translation: row.translation
   });
   table.value = false;
-
 };
 
 function splitTextIntoSentences(text: string): string[] {

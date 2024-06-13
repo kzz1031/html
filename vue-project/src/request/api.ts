@@ -1,7 +1,5 @@
 import instance from "@/request/http";
 
-//一般情况下，接口类型会放到一个文件
-// 下面两个TS接口，表示要传的参数
 interface ReqLogin {
     username: string
     password: string

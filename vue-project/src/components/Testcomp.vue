@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { ref,onBeforeMount } from 'vue';
 import image1 from '@/assets/images/background.jpeg';  // 正确导入图片
-import image2 from '@/assets/images/Intro.png';
+import image2 from '@/assets/images/Intro2.png';
 import image3 from '@/assets/images/Main.png';
 import { GetActiveUser } from '@/request/api';
 const images = ref([image1, image2, image3]);
