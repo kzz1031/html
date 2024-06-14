@@ -138,7 +138,6 @@ export const InsertWordApi = (data: WordList): Res<null> =>
 export const CollectApi = (data: ReqChatgpt): Res<null> =>
     instance.post('/api/collect', data);
 
-
 export const GetHistoryApi = (data: ReqChatgptHistory): Res<null> =>
     instance.post(`/api/GetHistory`, data);
 
