@@ -55,9 +55,7 @@ const deletecpretranslation = async (index: number, row : Translation) => {
   }
 };
 
-const formatDate = (dateString: string) => {
-  // const date = new Date(dateString);
-  // return date.toISOString().split('.')[0].replace('T', ' ');  
+const formatDate = (dateString: string) => { 
   const date = new Date(dateString);
   const timezoneOffset = date.getTimezoneOffset() * 60000;
   const localDate = new Date(date.getTime() - timezoneOffset);
