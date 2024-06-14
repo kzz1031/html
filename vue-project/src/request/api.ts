@@ -146,11 +146,24 @@ interface UpdateTranslation {
     translation: string,
     raw_created_at: string,
 }
+interface direction {
+    direction: string
+}
+interface UpdateDirection {
+    username: string,
+    direction: string[],
+}
 interface ReqChatgptPretranslation {
     username: string
     order_by_time : string
     search_content: string
 }
+interface ReqChatgptDirection {
+    username: string,
+    direction: string[],
+}
+
+
 //测试hello api
 export const TestHello = (): Res<null> =>
     instance.get('/api/hello');
@@ -210,7 +223,10 @@ export const DeletePretranslationApi = (data: ReqChatgptDelete): Res<null> =>
     instance.post(`/api/DeletePretranslation`, data);
 export const UpdatePretranslation = (data: UpdateTranslation): Res<null> =>
     instance.post(`/api/UpdatePretranslation`, data);
-
+export const UpdateDrawerdirection = (data: UpdateDirection): Res<null> =>
+    instance.post(`/api/UpdateDrawerdirection`, data);
+export const GetDirectionApi = (data: ReqChatgptDirection): Res<null> =>
+    instance.post(`/api/DirectionGet`, data);
 //登出 api
 export const LogoutApi = (): Res<null> =>
     instance.get('/api/logout');

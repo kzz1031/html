@@ -69,7 +69,8 @@ function jumptoUserInfo() {
 }
 
 function jumptoSetPreferences() {
-  router.push('/set-preferences');
+  if (userStore.userName == "请登录") ElMessage("用户未登录");
+  else router.push('/set-preferences');
 }
 
 </script>

@@ -4,14 +4,18 @@ import {Minus, Plus, Refresh, Edit, Delete, Share, Star, CircleCheck} from '@ele
 import Selector from './Selector.vue'
 import { ElMessage,  ElMessageBox } from 'element-plus';
 import {useUserstore} from '@/store/user'
-import {HistoryApi,CollectApi} from "@/request/api";
+import {HistoryApi,CollectApi, GetDirectionApi} from "@/request/api";
 import Slider from './Slider.vue'
 import PreferenceScroll from './PreferenceScroll.vue'
 import { FetchtranslationsApi } from "@/request/api";
 import emitter from '@/Mitt';
 import { onMounted, onUnmounted, computed } from 'vue';
 
-
+interface ReqChatgptDirection {
+    username: string,
+    direction: string[],
+}
+//const tableData = ReqChatgptDirection[]>([]);
 const userStore = useUserstore();
 const inputText = ref("");
 const translatedText = ref("");
@@ -31,6 +35,7 @@ const handleValueChange = (value: string) => {
   language.value = value;
   console.log(language.value);
 };
+const nowdirection = ref('btt'); // 默认方向
 const inputSentences = ref<string[]>([]);
 const translatedSentences = ref<string[]>([]);
 
@@ -92,14 +97,20 @@ async function fetchTranslations(username: string, wishes: string[], translation
   console.log(contextString)
     return contextString;
 }
-
+const directionRequest: ReqChatgptDirection = {
+    username: userStore.userName,
+    direction: []  // 这里将direction设置为一个空数组
+};
 onBeforeMount(async () => {
   //const response = await FetchtranslationsApi(preferData);
   inputText.value = userStore.originalText;
   translatedText.value = userStore.translatedText;
   userStore.originalText = "";
   userStore.translatedText = "";
+  let res = await GetDirectionApi({ username: userStore.userName, direction: directionRequest });
+  
 })
+
 
 function splitTextIntoSentences(text: string): string[] {
   return text
@@ -109,13 +120,40 @@ function splitTextIntoSentences(text: string): string[] {
 
 // 从 Pinia store 直接获取方向偏好
 const drawer = ref(false);
+const radio1 = ref('')
 const drawerDirection = ref(userStore.direction);
+const direction = ref({
+  direction: radio1.value,
+});
+
+
+// async function GetDirectionApi(params: string[]) {
+//     const response = await fetch('/api/directions', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(params)
+//     });
+//     if (!response.ok) {
+//         throw new Error('Network response was not ok');
+//     }
+//     return response.json();  // 返回解析后的 JSON 数据，假设这是一个数组
+// }
+
+
 
 async function translateText() {
   const apiKey = "sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9"; // 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
   const data = await fetchTranslations(userStore.userName, userStore.wishes, userStore.translations, userStore.created_at, userStore.updated_at);
-  referenceContext.value = data;
+  let contextPart = '';
+  if(data != '') {
+    referenceContext.value = data;
+    contextPart = '一定要把这些单词这样翻译:' + referenceContext.value;
+  } else {
+    referenceContext.value = '';
+  }
   console.log("translateText() 函数被调用了！");
   console.log(userStore.translate_style);
   console.log(referenceContext.value);
@@ -141,7 +179,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: '一定要把这些单词这样翻译:' + referenceContext.value + '现在，请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
+            content: contextPart + '现在，请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
           }
         ]
       })
@@ -326,7 +364,7 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-drawer
     v-model="drawer"
     :before-close="beforeCloseDrawer"
-    :direction="drawerDirection"
+    :direction="nowdirection"
     >
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>

@@ -20,4 +20,17 @@
   
   const size = ref(20)
   </script>
+
+<style>
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-evenly; 
+}
+
+.box-card {
+  flex-grow: 1; 
+}
+</style>
   

@@ -1,4 +1,5 @@
 <template>
+  <!-- <el-slider v-model="drawerWidth" min="100" max="500" label="抽屉宽度"></el-slider> -->
   <el-radio-group v-model="direction">
     <el-radio value="ltr">左侧显示</el-radio>
     <el-radio value="rtl">右侧显示</el-radio>
@@ -7,18 +8,19 @@
   </el-radio-group>
 
   <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
-    保存 <!-- open    把这个按钮当作确认这个类型 -->
+    展示 
   </el-button>
-  <!-- <el-button type="primary" style="margin-left: 16px" @click="drawer2 = true">
-    with footer
-  </el-button> -->
-
+  <el-button type="primary" style="margin-left: 16px" @click="confirmClick">
+    保存 
+  </el-button>
+  
   <el-drawer
     v-model="drawer"
     title="字词翻译"
     :direction="direction"
     :before-close="handleClose"
     :userStore.direction = "direction"
+    :size="drawerWidth"
   >
     <span>您好，这个弹出位置可以吗？</span>
   </el-drawer>
@@ -27,19 +29,10 @@
       <h4>set title by slot</h4>
     </template>
     <template #default>
-      <div>
-        <el-radio v-model="radio1" value="Option 1" size="large">
-          Option 1
-        </el-radio>
-        <el-radio v-model="radio1" value="Option 2" size="large">
-          Option 2
-        </el-radio>
-      </div>
     </template>
     <template #footer>
       <div style="flex: auto">
         <el-button @click="cancelClick">cancel</el-button>
-        <el-button type="primary" @click="confirmClick">confirm</el-button>
       </div>
     </template>
   </el-drawer>
@@ -50,42 +43,70 @@ import { ElMessageBox } from 'element-plus'
 import type { DrawerProps } from 'element-plus'
 import { ref, watch } from 'vue';
 import {useUserstore} from '@/store/user'
+import { UpdateDrawerdirection } from "@/request/api"
+import { ElMessage } from 'element-plus';
 
 const userStore = useUserstore();
 const olddirection = ref(userStore.direction); // 从 store 获取当前方向
 
 const drawer = ref(false)
 const drawer2 = ref(false)
-const radio1 = ref('Option 1')
-const direction = ref<DrawerProps['direction']>('rtl')
+const radio1 = ref('')
+const direction = ref('下方显示')
+const drawerWidth = ref(300); // 控制抽屉宽度的响应式数据
+
 const handleClose = (done: () => void) => {
-  ElMessageBox.confirm('您确定要关闭吗?', '确认操作', {
-  confirmButtonText: '确认',
-  cancelButtonText: '取消',
-  type: 'warning'
-})
-    .then(() => {
-      done()
-    })
-    .catch(() => {
-      // catch error
-    })
+  done();  // 直接执行关闭操作
 }
 function cancelClick() {
   drawer2.value = false
 }
-function confirmClick() {
-  ElMessageBox.confirm(`您确定要选择 ${radio1.value} ?`, '确认操作', {
-  confirmButtonText: '确认',
-  cancelButtonText: '取消',
-  type: 'warning'
-})
-    .then(() => {
-      drawer2.value = false
-    })
-    .catch(() => {
-      // catch error
-    })
+async function confirmClick() {
+  let show_direction = '';
+  if(direction.value == 'ltr') {
+    show_direction = '左侧显示';
+  }else if(direction.value == 'rtl') {
+    show_direction = '右侧显示';
+  }else if(direction.value == 'ttb') {
+    show_direction = '上方显示';
+  }else if(direction.value == 'btt') {
+    show_direction = '下方显示';
+  }
+try {
+    const result = await ElMessageBox.confirm(`您确定要选择 ${show_direction} 方向显示抽屉吗 ?`, '确认操作', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+    const newdirection = {
+      username: userStore.userName, // 用户名
+      direction: direction.value,
+    };
+
+    console.log('用户确认选择:', direction.value);
+    const response = await UpdateDrawerdirection(newdirection);
+    if (response.success) {
+      ElMessage.success("偏好方向保存成功");
+    } else {
+      ElMessage.error("偏好方向保存失败");
+    }
+  } catch (error: unknown) {  // Note the annotation here for error type
+    if (typeof error === 'object' && error !== null && 'message' in error) {
+      const message = (error as { message: string }).message;  // Using type assertion
+      if (message === 'cancel' || message === 'close') {
+        console.log('用户取消了操作');
+      } else {
+        console.error("存储偏好方向时发生错误:", message);
+        ElMessage.error("存储偏好方向时发生错误");
+      }
+    } else if (typeof error === 'string') {
+      console.error("存储偏好方向时发生错误:", error);
+      ElMessage.error("存储偏好方向时发生错误");
+    } else {
+      console.error("存储偏好方向时发生未知错误");
+      ElMessage.error("存储偏好方向时发生未知错误");
+    }
+  }
 }
 // 确保 Pinia store 更新用户选择的方向
   watch(olddirection, (direction) => {
@@ -94,4 +115,18 @@ function confirmClick() {
   watch(() => userStore.isDrawerOpen, (newVal) => {
       drawer.value = newVal;
   });
+  watch(direction, (newDirection) => {
+  radio1.value = newDirection;
+});
+//   async function updateDirection(newDirection) {
+//   try {
+//     const response = await axios.post('/api/setDirection', { direction: newDirection });
+//     if (response.status === 200) {
+//       userStore.setDirection(newDirection);
+//       console.log('方向已更新: ', newDirection);
+//     }
+//   } catch (error) {
+//     console.error('更新方向失败: ', error);
+//   }
+// }
 </script>
