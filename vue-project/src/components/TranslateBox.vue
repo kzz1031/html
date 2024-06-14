@@ -107,7 +107,7 @@ onBeforeMount(async () => {
   translatedText.value = userStore.translatedText;
   userStore.originalText = "";
   userStore.translatedText = "";
-  let res = await GetDirectionApi({ username: userStore.userName, direction: directionRequest });
+  //let res = await GetDirectionApi({ username: userStore.userName, direction: directionRequest });
   
 })
 
@@ -364,7 +364,7 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-drawer
     v-model="drawer"
     :before-close="beforeCloseDrawer"
-    :direction="nowdirection"
+    :direction="userStore.direction"
     >
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>

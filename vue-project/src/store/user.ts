@@ -8,7 +8,7 @@ export const useUserstore = defineStore("user", {
       is_superuser: false,
       search_sum: 0,
       translate_style: 2,
-      direction: "btt" as Direction, 
+      direction: "", 
       isDrawerOpen: false,
       originalText: "",
       translatedText: "",

@@ -84,6 +84,7 @@ try {
     };
 
     console.log('用户确认选择:', direction.value);
+    userStore.direction = direction.value;
     const response = await UpdateDrawerdirection(newdirection);
     if (response.success) {
       ElMessage.success("偏好方向保存成功");

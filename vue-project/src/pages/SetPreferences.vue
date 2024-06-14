@@ -27,12 +27,12 @@
                         </el-col>
                     </el-row>
                     <el-row :gutter="20">
-                        <el-col :span="20" :offset="2">
+                        <!-- <el-col :span="20" :offset="2">
                             <div class="grid-content ep-bg-purple">
                                 <SpaceSize></SpaceSize>
                             </div>
                                 
-                        </el-col>
+                        </el-col> -->
                     </el-row>
                         <el-row :gutter="20">
                         
