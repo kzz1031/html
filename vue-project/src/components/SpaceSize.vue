@@ -16,9 +16,12 @@
   </template>
   
   <script lang="ts" setup>
-  import { ref } from 'vue'
-  
+  import { useUserstore } from '@/store/user';
+import { ref } from 'vue'
+const userStore = useUserstore();
   const size = ref(20)
+  // userStore.space = size;
+  
   </script>
 
 <style>
