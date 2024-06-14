@@ -17,6 +17,7 @@ import SetPreferences from "@/pages/SetPreferences.vue";
 import Longtext from "@/pages/Longtext.vue"
 import Wordlist from "@/pages/Wordlist.vue";
 import component from "element-plus/es/components/tree-select/src/tree-select-option.mjs";
+import Pretranslation from "@/pages/Pretranslation.vue";
 const routes =
     [
         {
@@ -63,6 +64,11 @@ const routes =
             path: '/wordlist',
             name: 'Wordlist',
             component: Wordlist
+        },
+        {
+            path: '/pretranslation',
+            name: 'Pretranslation',
+            component: Pretranslation,
         },
         {
             path: '/index',

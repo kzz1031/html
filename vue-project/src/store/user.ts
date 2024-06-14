@@ -14,7 +14,13 @@ export const useUserstore = defineStore("user", {
       translatedText: "",
       addingtoWordlist : false,
       tokens: 0,
-      surpass: 0
+      surpass: 0,
+      newWish: '',
+      
+      wishes: "",
+      translations: "",
+      created_at: "",
+      updated_at: ""
     };
   },
   actions: {
@@ -25,9 +31,12 @@ export const useUserstore = defineStore("user", {
       this.isDrawerOpen = !this.isDrawerOpen;
     },
     setTexts(original: string, translated: string) {
-        console.log('setting texts')
-      this.originalText = original;
-      this.translatedText = translated;
+      console.log('setting texts')
+    this.originalText = original;
+    this.translatedText = translated;
+    },
+    setNewWish(wish: string) {
+      this.newWish = wish;
     }
   },
 });

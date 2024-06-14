@@ -186,7 +186,7 @@ const handleDelete = async (index: number, row: any) => {
   <el-dialog title="单词信息" v-model="wordDialogVisible" width="30%" draggable="true">
     <el-form :model="currentWord" label-width="120px">
       <el-form-item label="单词">
-        <el-input v-model="currentWord.word" disabled></el-input>
+        <el-input v-model="currentWord.word" i></el-input>
       </el-form-item>
       <el-form-item label="意思">
         <el-input v-model="currentWord.meaning"></el-input>
