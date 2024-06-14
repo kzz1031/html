@@ -26,11 +26,15 @@
                     <el-row :gutter="20">
                         <el-col :span="20" :offset="2">
                             <div class="grid-content ep-bg-purple" />
+                                
                         </el-col>
                     </el-row>
                         <el-row :gutter="20">
                         <el-col :span="20" :offset="2">
                             <div class="grid-content ep-bg-purple" />
+                            <div class="">
+                                <PreferenceDrawer></PreferenceDrawer>
+                            </div>
                         </el-col>
                     </el-row>
                 </el-main>

@@ -84,7 +84,7 @@ async function fetchTranslations(username: string, wishes: string[], translation
     let contextString = "";
     response.pretranslation.forEach((item) => {
         if (item.wish && item.translation) { // 确保 wish 和 translation 数据存在
-            contextString += `我希望 ${item.wish} 翻译成 ${item.translation}。 `;
+            contextString += ` ${item.wish} 必须翻译成 ${item.translation}。 `;
     } else {
         console.log(`Missing data wish or translation is undefined.`);
     }
@@ -141,7 +141,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: ' (一定要把我希望翻译的内容替换成我想要的翻译：):' + referenceContext.value + '请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
+            content: '一定要把这些单词这样翻译:' + referenceContext.value + '现在，请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
           }
         ]
       })
