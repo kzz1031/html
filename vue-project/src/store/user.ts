@@ -43,4 +43,5 @@ export const useUserstore = defineStore("user", {
     setNewWish(wish: string) {
       this.newWish = wish;
     }
-)
+  },
+});
