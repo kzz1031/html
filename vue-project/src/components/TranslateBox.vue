@@ -337,15 +337,7 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-drawer
     v-model="drawer"
     :before-close="beforeCloseDrawer"
-    :direction="drawerDirection"
-    title="字词翻译偏好">
-    <template #title>
-        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; height: 5px; margin-bottom: 0px;">
-          <span>字词翻译偏好</span>
-          <el-button type="primary" :icon="CircleCheck" @click="setPreference">保存字词翻译偏好</el-button>
-        </div>
-    </template>
-    >
+    :direction="drawerDirection">
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
