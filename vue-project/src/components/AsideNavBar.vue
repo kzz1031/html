@@ -90,9 +90,6 @@ function jumptoSetPreferences() {
             <el-menu-item index="1-2" @click="jumptoHistory()"
               ><el-icon><Search /></el-icon>历史记录查询</el-menu-item
             >
-            <el-menu-item index="1-2" @click="jumptoPretranslation()"
-              ><el-icon><MessageBox /></el-icon>偏好查询</el-menu-item
-            >
             <el-menu-item index="1-3" @click="jumptoCollection()"
               ><el-icon><Star /></el-icon>收藏</el-menu-item
             >
@@ -101,6 +98,9 @@ function jumptoSetPreferences() {
             >
             <el-menu-item index="1-5" @click="jumptoWordlist()"
               ><el-icon><Notebook /></el-icon>单词本</el-menu-item
+            >
+            <el-menu-item index="1-6" @click="jumptoPretranslation()"
+              ><el-icon><MessageBox /></el-icon>偏好查询</el-menu-item
             >
           </el-sub-menu>
           <el-sub-menu index="2">

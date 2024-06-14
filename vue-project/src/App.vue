@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <keep-alive include="Main,Longtext">
+    <router-view></router-view>
+  </keep-alive>
 </template>
 
 <style>

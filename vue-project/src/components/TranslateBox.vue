@@ -88,7 +88,7 @@ async function fetchTranslations(username: string, wishes: string[], translation
     let contextString = "";
     response.pretranslation.forEach((item) => {
         if (item.wish && item.translation) { // 确保 wish 和 translation 数据存在
-            contextString += `我希望 ${item.wish} 翻译成 ${item.translation}。 `;
+          contextString += ` ${item.wish} 必须翻译成 ${item.translation}。 `;
     } else {
         console.log(`Missing data wish or translation is undefined.`);
     }
@@ -122,8 +122,11 @@ async function translateText() {
   }
   const apiKey = "sk-DuWXLO6nUrpGlIJ8F58f7402B9D04969BcC1E34b2314D0C9"; // 替换成你的 API 密钥
   const apiUrl = "https://api.132006.xyz/v1/chat/completions";
-  const data = await fetchTranslations(userStore.userName, userStore.wishes, userStore.translations, userStore.created_at, userStore.updated_at);
-  referenceContext.value = data;
+  //const data = await fetchTranslations(userStore.userName, userStore.wishes, userStore.translations, userStore.created_at, userStore.updated_at);
+  if(userStore.userName != '请登录') {
+    const data = await fetchTranslations(userStore.userName, userStore.wishes, userStore.translations, userStore.created_at, userStore.updated_at);
+    referenceContext.value = '### 一定要把这些单词这样翻译:' + data + ' ###' +' 现在，请将下面这段话从';
+  }
   console.log("translateText() 函数被调用了！");
   console.log(userStore.translate_style);
   console.log(referenceContext.value);
@@ -149,7 +152,7 @@ async function translateText() {
         messages: [
           {
             role: 'user',
-            content: ' (一定要把我希望翻译的内容替换成我想要的翻译：):' + referenceContext.value + '请将下面这段话从' + language.value + style.value  + '(直接把译文给我):' + inputText.value 
+            content: referenceContext.value  + language.value + style.value + '(直接把译文给我):' + inputText.value 
           }
         ]
       })
