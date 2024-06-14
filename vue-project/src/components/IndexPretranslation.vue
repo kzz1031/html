@@ -56,8 +56,12 @@ const deletecpretranslation = async (index: number, row : Translation) => {
 };
 
 const formatDate = (dateString: string) => {
+  // const date = new Date(dateString);
+  // return date.toISOString().split('.')[0].replace('T', ' ');  
   const date = new Date(dateString);
-  return date.toISOString().split('.')[0].replace('T', ' ');  // ISO字符串是 "YYYY-MM-DDTHH:MM:SS.sssZ" 格式
+  const timezoneOffset = date.getTimezoneOffset() * 60000;
+  const localDate = new Date(date.getTime() - timezoneOffset);
+  return localDate.toISOString().split('.')[0].replace('T', ' ');
 }
 
 onBeforeMount(async () => {
@@ -126,7 +130,7 @@ const PretranslationUpdate = async (currentPretranslation: Translation) => {
     ElMessage.success('修改成功')
     const index = tableData.value.findIndex(p => p.raw_created_at === currentPretranslation.raw_created_at && p.userName === userStore.userName);
     if (index !== -1) {
-      tableData.value[index] = { ...tableData.value[index], ...currentPretranslation };
+      tableData.value[index] = { ...tableData.value[index], ...currentPretranslation, updated_at: formatDate(new Date().toISOString()) };
     }
     console.log("Table updated successfully.");
   }
