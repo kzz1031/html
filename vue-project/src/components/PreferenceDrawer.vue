@@ -43,6 +43,7 @@ import { ElMessageBox } from 'element-plus'
 import type { DrawerProps } from 'element-plus'
 import { ref, watch } from 'vue';
 import {useUserstore} from '@/store/user'
+import { UpdateDrawerdirection } from "@/request/api"
 import { ElMessage } from 'element-plus';
 
 const userStore = useUserstore();
@@ -84,7 +85,12 @@ try {
 
     console.log('用户确认选择:', direction.value);
     userStore.direction = direction.value;
-    ElMessage.success("偏好方向保存成功");
+    const response = await UpdateDrawerdirection(newdirection);
+    if (response.success) {
+      ElMessage.success("偏好方向保存成功");
+    } else {
+      ElMessage.error("偏好方向保存失败");
+    }
   } catch (error: unknown) {  // Note the annotation here for error type
     if (typeof error === 'object' && error !== null && 'message' in error) {
       const message = (error as { message: string }).message;  // Using type assertion
@@ -103,4 +109,25 @@ try {
     }
   }
 }
+// 确保 Pinia store 更新用户选择的方向
+  watch(olddirection, (direction) => {
+      userStore.setDirection(direction);
+  });
+  watch(() => userStore.isDrawerOpen, (newVal) => {
+      drawer.value = newVal;
+  });
+  watch(direction, (newDirection) => {
+  radio1.value = newDirection;
+});
+//   async function updateDirection(newDirection) {
+//   try {
+//     const response = await axios.post('/api/setDirection', { direction: newDirection });
+//     if (response.status === 200) {
+//       userStore.setDirection(newDirection);
+//       console.log('方向已更新: ', newDirection);
+//     }
+//   } catch (error) {
+//     console.error('更新方向失败: ', error);
+//   }
+// }
 </script>

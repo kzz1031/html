@@ -4,14 +4,18 @@ import {Minus, Plus, Refresh, Edit, Delete, Share, CopyDocument, Star, CircleChe
 import Selector from './Selector.vue'
 import { ElMessage,  ElMessageBox } from 'element-plus';
 import {useUserstore} from '@/store/user'
-import {HistoryApi,CollectApi} from "@/request/api";
+import {HistoryApi,CollectApi, GetDirectionApi} from "@/request/api";
 import Slider from './Slider.vue'
 import PreferenceScroll from './PreferenceScroll.vue'
 import { FetchtranslationsApi } from "@/request/api";
 import emitter from '@/Mitt';
 import { onMounted, onUnmounted, computed } from 'vue';
 
-
+interface ReqChatgptDirection {
+    username: string,
+    direction: string[],
+}
+//const tableData = ReqChatgptDirection[]>([]);
 const userStore = useUserstore();
 const inputText = ref("");
 const translatedText = ref("");
@@ -31,6 +35,7 @@ const handleValueChange = (value: string) => {
   language.value = value;
   console.log(language.value);
 };
+const nowdirection = ref('btt'); // 默认方向
 const inputSentences = ref<string[]>([]);
 const translatedSentences = ref<string[]>([]);
 
@@ -82,6 +87,10 @@ async function fetchTranslations(username: string, wishes: string[], translation
   console.log(contextString)
     return contextString;
 }
+const directionRequest: ReqChatgptDirection = {
+    username: userStore.userName,
+    direction: []  // 这里将direction设置为一个空数组
+};
 
 function splitTextIntoSentences(text: string): string[] {
   return text
@@ -90,7 +99,12 @@ function splitTextIntoSentences(text: string): string[] {
 }
 
 const drawer = ref(false);
+const radio1 = ref('')
 const drawerDirection = ref(userStore.direction);
+const direction = ref({
+  direction: radio1.value,
+});
+
 
 async function translateText() {
   if(inputText.value.length > 2000) {
@@ -295,7 +309,7 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-button
       type="primary"
       class="translate_button"
-      style=""
+      :style="{ marginLeft: (userStore.space/2) + 'px', marginRight: (userStore.space / 2) + 'px'}"
       @click="translateText"
       :disabled="loading"
       ><el-icon size="20px" :class="{ 'is-loading': loading }"
@@ -318,7 +332,8 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-drawer
     v-model="drawer"
     :before-close="beforeCloseDrawer"
-    :direction="drawerDirection">
+    :direction="userStore.direction"
+    >
     <!-- 抽屉内容 -->
     <PreferenceScroll></PreferenceScroll>
     </el-drawer>
