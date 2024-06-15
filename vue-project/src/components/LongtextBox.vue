@@ -335,7 +335,7 @@ function compareText() {
   </div>
   <div class="container_body">
     <textarea class="input_Text" v-model="inputText" :style="{ fontSize: fontSize + 'px',opacity: 0.8 }" placeholder="输入要翻译的文本"></textarea>
-    <el-button type="primary" class="translate_button" @click="translateText"><el-icon size="20px" :class="{ 'is-loading': loading }"><Refresh /></el-icon></el-button>
+    <el-button type="primary" class="translate_button" @click="translateText" :disabled="loading"><el-icon size="20px" :class="{ 'is-loading': loading }"><Refresh /></el-icon></el-button>
     <textarea class="translated_Text" v-model="translatedText" :style="{ fontSize: fontSize + 'px',opacity: 0.8 }" placeholder="翻译结果"></textarea>
   </div>
   <div style="margin-top: 10px; display: flex;">

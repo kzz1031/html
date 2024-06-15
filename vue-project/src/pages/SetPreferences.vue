@@ -1,6 +1,8 @@
 <script setup lang="ts">
     import PreferenceDrawer from "@/components/PreferenceDrawer.vue";
+    import SpaceSize from "@/components/SpaceSize.vue";
     import AsideNavBar from "@/components/AsideNavBar.vue";
+    import Header from "@/components/Header.vue";
     import { ElContainer, ElHeader, ElMain, ElAside } from 'element-plus';
 
 </script>
@@ -12,7 +14,8 @@
             <AsideNavBar></AsideNavBar>
             <el-container>
                 <el-header class="custom-header">
-                    <h1 class="header-title">页面偏好设置</h1>
+                    <Header>
+                    </Header>
                 </el-header>
                 <el-main>
                     <el-row :gutter="20">
@@ -24,14 +27,15 @@
                         </el-col>
                     </el-row>
                     <el-row :gutter="20">
-                        <el-col :span="20" :offset="2">
-                            <div class="grid-content ep-bg-purple" />
-                        </el-col>
+                        <!-- <el-col :span="20" :offset="2">
+                            <div class="grid-content ep-bg-purple">
+                                <SpaceSize></SpaceSize>
+                            </div>
+                                
+                        </el-col> -->
                     </el-row>
                         <el-row :gutter="20">
-                        <el-col :span="20" :offset="2">
-                            <div class="grid-content ep-bg-purple" />
-                        </el-col>
+                        
                     </el-row>
                 </el-main>
                 <!-- <el-footer>Footer</el-footer> -->
@@ -51,22 +55,27 @@
     border-radius: 4px;
   }
   
-  .grid-content, .preference-box {
+  .preference-box {
     border: 2px solid #AAA; /* 统一边框样式 */
-    background-color: #f2f2f2; /* 浅灰色背景 */
+    
     border-radius: 4px;
     padding: 10px; /* 内边距 */
     display: flex; /* 使用Flexbox进行布局 */
     justify-content: center; /* 水平居中 */
     align-items: center; /* 垂直居中 */
-    height: 150px; /* 统一高度 */
+    min-height: 150px; /* 统一高度 */
   }
+  .grid-content {
+    border: 2px solid #AAA; /* 统一边框样式 */
+    
+    border-radius: 4px;
+    padding: 10px; /* 内边距 */
+    
+    min-height: 150px; /* 统一高度 */
+  }
+  
   .custom-header {
-    display: flex; /* 使用 Flexbox 进行布局 */
-    justify-content: center; /* 水平居中标题 */
-    align-items: center; /* 垂直居中标题 */
-    background-color: #333; /* 背景色，可根据需要调整 */
-    color: #fff; /* 字体颜色，确保与背景色对比度高 */
+    margin-bottom: 10px
 }
 
 .header-title {

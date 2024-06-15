@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, watch } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import {Minus, Plus, Refresh, Edit, Delete, Share, CopyDocument, Star, CircleCheck} from '@element-plus/icons-vue'
 import Selector from './Selector.vue'
 import { ElMessage,  ElMessageBox } from 'element-plus';
@@ -41,9 +41,6 @@ const handleClick = () => {
   console.log("handleclick");
   emit("translate_sum");
 };
-watch(() => userStore.originalText, (newText) => {
-  inputText.value = newText;
-});
 const handlerightClick = () => {
   gridData.value.push({
       wish: 'test',
@@ -52,25 +49,14 @@ const handlerightClick = () => {
   emit("prewish");
 };
 
-watch(() => userStore.translatedText, (newText) => {
-  translatedText.value = newText;
-});
-
 onBeforeMount(async () => {
+  console.log("Main.....");
   inputText.value = userStore.originalText;
   translatedText.value = userStore.translatedText;
+  console.log(inputText,translatedText);
   userStore.originalText = "";
   userStore.translatedText = "";
 })
-
-watch(() => userStore.originalText, (newText) => {
-  inputText.value = newText;
-});
-
-watch(() => userStore.translatedText, (newText) => {
-  translatedText.value = newText;
-});
-
 
 async function fetchTranslations(username: string, wishes: string[], translations: string[], created_at: string[], updated_at: string[],) {
   console.log('fetching')
@@ -97,21 +83,12 @@ async function fetchTranslations(username: string, wishes: string[], translation
     return contextString;
 }
 
-onBeforeMount(async () => {
-  //const response = await FetchtranslationsApi(preferData);
-  inputText.value = userStore.originalText;
-  translatedText.value = userStore.translatedText;
-  userStore.originalText = "";
-  userStore.translatedText = "";
-})
-
 function splitTextIntoSentences(text: string): string[] {
   return text
     .split(/(?<=[。！？\.\!\?])/)
     .filter((sentence) => sentence.trim().length > 0);
 }
 
-// 从 Pinia store 直接获取方向偏好
 const drawer = ref(false);
 const drawerDirection = ref(userStore.direction);
 
@@ -320,6 +297,7 @@ function handleRightClick(event: MouseEvent, data: string) {
       class="translate_button"
       style=""
       @click="translateText"
+      :disabled="loading"
       ><el-icon size="20px" :class="{ 'is-loading': loading }"
         ><Refresh /></el-icon
     ></el-button>
