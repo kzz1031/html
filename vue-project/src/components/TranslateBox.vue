@@ -342,7 +342,7 @@ function handleRightClick(event: MouseEvent, data: string) {
     <el-button
       type="primary"
       class="translate_button"
-      style=""
+      :style="{ marginLeft: (userStore.space/2) + 'px', marginRight: (userStore.space / 2) + 'px'}"
       @click="translateText"
       ><el-icon size="20px" :class="{ 'is-loading': loading }"
         ><Refresh /></el-icon
