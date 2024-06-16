@@ -1,29 +1,72 @@
-# 基于大语言模型的翻译网页
+## 项目介绍
 
-### 浏览器网页是客户端，客户端通过服务器访问数据库。这是SOA架构，我们细分用到Serverless架构，并在具体提供服务Controller和用户端加上BFF。BFF就是在前端和后端中间用JavaScript写个能让前端在后端跑的东西，用Express.js框架（一个流行的Node.js web应用框架）
+### 功能及展示效果
 
-### 用户端⇔Restful API服务⇔Controller（UI服务）⇔Business Services（业务服务）⇔Data Services（数据管理模块）⇔数据接口⇔数据库
+#### 主界面翻译
 
-在用户端用正则语言进行验证其输入信息；API网关设置和Restful API服务作用重复
+![image-20240610222603676](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610222603676.png)
 
-数据库面向本地和服务器；用户端用sqlite来做，用户端自己到UI到服务再到后面访问自己数据库
+- slider进行翻译风格的调整（正式、口语）
+- 语言选择（中译英、英译中）
+- 下方button支持字体放大缩小，复制翻译结果，收藏，翻译偏好设置
+- 数据面板显示查询总次数，当前用户数，剩余tokens
+- 动态背景板（vantas）
 
-数据库管理模块到数据库用函数调用，千万不要进程调用
+#### 历史记录
 
-API网关：①请求路由：API网关接收来自客户端的请求，并根据配置将这些请求路由到适当的后端服务（如AWS Lambda函数）。这涵盖了RESTful API和可能的其他API模式。
+![image-20240610223657617](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610223657617.png)
 
-        ②数据转换：它可以处理请求和响应的数据转换。      ————执行转换任务
-        
-        ③认证和授权：API网关常常负责处理认证（验证请求者的身份）和授权（确定请求者是否有权进行请求的操作）。        ————用户登录是是实现认证方式，这里确保调用API的是合法用户，并且该用户有权执行请求的操作
-        
-        ④限流和配额管理：通过限制请求的速率           ————后期考略
-        
-        ⑤监控和日志记录：收集关于API使用情况的数据    ————后期考虑
-        
+- 支持搜索，按时间排序的功能
+- 点击navigate button可跳转至主界面，并打开该内容
 
-我们先约定好数据格式，可以在OpenAPI规范上看看，如API响应应该包含哪些字段，字段的数据类型是什么。        ————设计约定
+#### 收藏
 
-再一个负责前端对用户，一个负责后端任务和数据库。这些网关结构、数据格式、通讯协议网上应该有现成的，我们找找。后端框架可以用数据库概论的，前端网上也许有模板，我们寻找寻找。
+![image-20240610223917457](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610223917457.png)
 
-验证码api：https://gitee.com/monoplasty/vue-monoplasty-slide-verify
+- 采用折叠面板显示
+- button功能同历史记录界面
 
+#### 长文本
+
+![image-20240610224048147](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610224048147.png)
+
+- 支持万字文本翻译
+- 进度条显示翻译进度
+- 学习者button打开学习面板，大语言模型归纳重点单词
+- 点击加号跳转到单词本
+
+![image-20240610225506852](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610225506852.png)
+
+- 文本比对，鼠标hover，对应句子高亮
+
+![image-20240610225715934](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240610225715934.png)
+
+#### 单词本
+
+![image-20240611112603371](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240611112603371.png)
+
+- 可实现自定义等级，词性，评级
+
+### 整体框架
+
+ ```mermaid
+graph LR;
+vue3 --> bserve --> postgreSQL
+bserve --> vue3 
+ ```
+
+- 前端采用vue3，组件页面分开编写，提高组件的复用率
+- 后端用bserve，创建端口localhost：8080进行监听，与后端postgreSQL进行交互
+
+![image-20240611184436936](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240611184436936.png)
+
+### 部署
+
+- 后端: 点击打开bserv文件中的`WebApp.sln` 点击运行，创建端口8080
+
+  >需要安装postgreSQL，自建table
+
+![image-20240611185006858](C:\Users\15027\AppData\Roaming\Typora\typora-user-images\image-20240611185006858.png)
+
+- 前端命令中运行`npm run dev`，部署vue项目
+- 两个都部署好了以后即可正常使用
